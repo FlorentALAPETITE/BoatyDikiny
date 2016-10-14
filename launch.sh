@@ -1,3 +1,3 @@
 javac src/*.java
 
-java ClassePrincipale
+java Graphics
