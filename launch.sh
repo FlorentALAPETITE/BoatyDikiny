@@ -1,3 +1,2 @@
-javac src/*.java
-
-java Graphics
+javac -d bin/ src/*.java
+java -cp bin/ Connexion
