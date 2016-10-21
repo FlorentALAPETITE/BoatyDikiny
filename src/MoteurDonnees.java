@@ -70,7 +70,17 @@ class MoteurDonnees {
 		matriceCase[y][x].setCouleur(c);
 	}
 
+	public Case[][] getCases(){
+		return matriceCase;
+	}
 
+	public int getLignes(){
+		return lignes_;
+	}
+
+	public int getColonnes(){
+		return colonnes_;
+	}
 
 	@Override
 	public String toString(){
