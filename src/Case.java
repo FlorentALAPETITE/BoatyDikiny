@@ -28,6 +28,9 @@ class Case {
 		couleur_=col;
 	}
 
+	public Color getCouleur(){
+		return couleur_;
+	}
 
 	public void setCouleur(Color c){
 		couleur_=c;

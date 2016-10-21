@@ -1,24 +1,50 @@
+import java.lang.*;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+import javafx.scene.canvas.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
- 
+
 public class Graphisme extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+	private MoteurDonnees d_;
+	private int h_;
+	private int w_;
+	private int tailleCase_;
 
-    @Override
-    public void start(Stage primaryStage) {
-        primaryStage.setTitle("Improved-Potatoe");
-        StackPane root = new StackPane();
-        primaryStage.setScene(new Scene(root, 800, 800, Color.BLACK));
-        primaryStage.show();
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) {
+		h_ = 800;
+		w_ = 800;
+		d_ = new MoteurDonnees(10,10,2);
+		
+		StackPane root = new StackPane();
+		Scene scene = new Scene(root, h_, w_, Color.BLACK);
+		tailleCase_ = h_/Math.max(d_.getLignes(), d_.getColonnes())-1;
+
+
+		Case[][] matrice = d_.getCases();
+		final Canvas canvas = new Canvas(h_, w_);
+		GraphicsContext gc = canvas.getGraphicsContext2D();
+		for(int i=0; i<d_.getColonnes(); ++i){
+			for(int j=0; j<d_.getLignes(); ++j){
+				gc.setFill(matrice[i][j].getCouleur());
+				gc.fillRect(i+1+tailleCase_, j+1+tailleCase_, tailleCase_, tailleCase_);
+			}
+		}
+
+				root.getChildren().add(canvas);
+		primaryStage.setTitle("Improved-Potatoe");
+		primaryStage.setScene(scene);
+		primaryStage.show();
+	}
 }
