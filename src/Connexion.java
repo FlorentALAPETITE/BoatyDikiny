@@ -2,6 +2,6 @@
 class Connexion {
 	
 	public static void main(String[] args) {
-		Graphics g = new Graphics();
+		MoteurDonnees g = new MoteurDonnees(10,10,2);	
 	}
 }
