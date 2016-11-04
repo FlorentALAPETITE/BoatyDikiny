@@ -8,6 +8,7 @@ import javafx.scene.shape.*;
 import javafx.scene.canvas.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class Graphisme extends Application {
@@ -28,23 +29,24 @@ public class Graphisme extends Application {
 		d_ = new MoteurDonnees(10,10,3);
 		
 		StackPane root = new StackPane();
+
+		Pane plateau = new Pane();
 		Scene scene = new Scene(root, h_, w_, Color.BLACK);
 		tailleCase_ = h_/Math.max(d_.getLignes(), d_.getColonnes())-1;
 
-
 		Case[][] matrice = d_.getCases();
-		final Canvas canvas = new Canvas(h_, w_);
-		GraphicsContext gc = canvas.getGraphicsContext2D();
-		System.out.println(d_.getColonnes()+" "+d_.getLignes());
+		Canvas canvas = new Canvas(h_, w_);
+		Rectangle r;
 		for(int i=0; i<d_.getColonnes(); ++i){
 			for(int j=0; j<d_.getLignes(); ++j){
-				gc.setFill(matrice[i][j].getCouleur());
-				gc.fillRect(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
+				r = new Rectangle(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
+				r.setFill(matrice[i][j].getCouleur());
+				plateau.getChildren().add(r);
 			}
 		}
 
-
-		root.getChildren().add(canvas);
+		root.getChildren().add(plateau);
+		
 		primaryStage.setTitle("Improved-Potatoe");
 		primaryStage.setScene(scene);
 		primaryStage.show();
