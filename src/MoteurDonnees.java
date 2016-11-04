@@ -40,10 +40,10 @@ class MoteurDonnees {
 				randX = r.nextInt(colonnes);
 				randY = r.nextInt(lignes);
 
-				trouveCaseVide=!matriceCase[randY][randX].testCaseObjectif();
+				trouveCaseVide=!matriceCase[randX][randY].testCaseObjectif();
 			}
 
-			matriceCase[randY][randX].setCaseObjectif(Color.RED);
+			matriceCase[randX][randY].setCaseObjectif(Color.RED);
 			casesObjectifJ1-=1;			
 		}
 
@@ -55,10 +55,10 @@ class MoteurDonnees {
 				randX = r.nextInt(colonnes);
 				randY = r.nextInt(lignes);
 
-				trouveCaseVide=!matriceCase[randY][randX].testCaseObjectif();
+				trouveCaseVide=!matriceCase[randX][randY].testCaseObjectif();
 			}
 
-			matriceCase[randY][randX].setCaseObjectif(Color.BLUE);
+			matriceCase[randX][randY].setCaseObjectif(Color.BLUE);
 			casesObjectifJ2-=1;			
 		}
 
