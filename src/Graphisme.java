@@ -9,6 +9,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.*;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class Graphisme extends Application {
@@ -41,6 +42,7 @@ public class Graphisme extends Application {
 			for(int j=0; j<d_.getLignes(); ++j){
 				r = new Rectangle(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
 				r.setFill(matrice[i][j].getCouleur());
+				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler());
 				plateau.getChildren().add(r);
 			}
 		}
