@@ -4,14 +4,14 @@ import java.util.Random;
 
 class MoteurDonnees {
 
-	private Case [] [] matriceCase;
+	private Case [] [] matriceCase_;
 	private int lignes_;
 	private int colonnes_;
-
+	private boolean tour_;
 
 	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
 
-		matriceCase = new Case [colonnes][lignes];
+		matriceCase_ = new Case [colonnes][lignes];
 
 		lignes_=lignes;
 		colonnes_=colonnes;
@@ -19,7 +19,7 @@ class MoteurDonnees {
 
 		for(int i=0;i<colonnes;++i){
 			for(int y=0;y<lignes;y++){
-				matriceCase[i][y] = new Case(i+1,y+1,Color.WHITE);
+				matriceCase_[i][y] = new Case(i,y,Color.WHITE);
 			}
 		}
 
@@ -40,10 +40,10 @@ class MoteurDonnees {
 				randX = r.nextInt(colonnes);
 				randY = r.nextInt(lignes);
 
-				trouveCaseVide=!matriceCase[randX][randY].testCaseObjectif();
+				trouveCaseVide=!matriceCase_[randX][randY].testCaseObjectif();
 			}
 
-			matriceCase[randX][randY].setCaseObjectif(Color.RED);
+			matriceCase_[randX][randY].setCaseObjectif(Color.RED);
 			casesObjectifJ1-=1;			
 		}
 
@@ -55,23 +55,29 @@ class MoteurDonnees {
 				randX = r.nextInt(colonnes);
 				randY = r.nextInt(lignes);
 
-				trouveCaseVide=!matriceCase[randX][randY].testCaseObjectif();
+				trouveCaseVide=!matriceCase_[randX][randY].testCaseObjectif();
 			}
 
-			matriceCase[randX][randY].setCaseObjectif(Color.BLUE);
+			matriceCase_[randX][randY].setCaseObjectif(Color.BLUE);
 			casesObjectifJ2-=1;			
 		}
+
+		tour_=true; // bleu
 
 
 	}
 
 	// 1 : Colorie une case de la matrice du jeu en la couleur c
-	public void colorerCase(int x, int y, Color c){
-		matriceCase[y][x].setCouleur(c);
+	public void colorerCase(int colonne, int ligne, Color c){
+		matriceCase_[colonne][ligne].setCouleur(c);		
 	}
 
 	public Case[][] getCases(){
-		return matriceCase;
+		return matriceCase_;
+	}
+
+	public Case getCase(int colonne, int ligne){
+		return matriceCase_[colonne][ligne];
 	}
 
 	public int getLignes(){
@@ -82,12 +88,20 @@ class MoteurDonnees {
 		return colonnes_;
 	}
 
+	public boolean getTour(){
+		return tour_;
+	}
+
+	public void changeTour(){
+		tour_=!tour_;
+	}
+
 	@Override
 	public String toString(){
 		String res="";
 		for(int i=0;i<colonnes_;++i){
 			for(int y=0;y<lignes_;y++){
-				res+=matriceCase[i][y].toString();
+				res+=matriceCase_[i][y].toString();
 			}
 			res+="\n";
 		}

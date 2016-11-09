@@ -42,7 +42,7 @@ public class Graphisme extends Application {
 			for(int j=0; j<d_.getLignes(); ++j){
 				r = new Rectangle(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
 				r.setFill(matrice[i][j].getCouleur());
-				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler());
+				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler(d_,d_.getCase(i,j)));
 				plateau.getChildren().add(r);
 			}
 		}

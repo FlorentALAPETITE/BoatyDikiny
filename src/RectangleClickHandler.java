@@ -14,9 +14,29 @@ import javafx.stage.Stage;
 
 
 class RectangleClickHandler implements EventHandler<MouseEvent>{
+
+	private MoteurDonnees moteurD_;
+	private Case c_;
+
+	public RectangleClickHandler(MoteurDonnees m, Case c){
+		moteurD_ = m;
+		c_=c;
+	}
+
 	
 	public void handle(MouseEvent event){
-	((Rectangle)event.getSource()).setFill(Color.RED);
+		if(c_.getCouleur()==Color.WHITE){
+			Color col; 
+			if (moteurD_.getTour())
+				col = Color.RED;
+			else
+				col = Color.BLUE;
+			((Rectangle)event.getSource()).setFill(col);
+			moteurD_.changeTour();
+			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
+		}
+
+			
 	}
 
 

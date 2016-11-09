@@ -3,18 +3,27 @@ import javafx.scene.paint.Color;
 
 class Case {
 
-	private int x_;
-	private int y_;
+	private int colonne_;
+	private int ligne_;
 
 	private Color couleur_;
 
 	private boolean caseObjectif_;
 
-	public Case(int x, int y, Color col){
-		x_=x;
-		y_=y;
+	public Case(int colonne, int lig, Color col){
+		colonne_=colonne;
+		ligne_=lig;
 		couleur_=col;
 		caseObjectif_ = false;
+	}
+
+
+	public int getColonne(){
+		return colonne_;
+	}
+
+	public int getLigne(){
+		return ligne_;
 	}
 
 
