@@ -11,6 +11,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import java.util.ArrayList;
 
 public class Graphisme extends Application {
 
@@ -27,7 +28,7 @@ public class Graphisme extends Application {
 	public void start(Stage primaryStage) {
 		h_ = 800;
 		w_ = 800;
-		d_ = new MoteurDonnees(10,10,3);
+		d_ = new MoteurDonnees(20,20,3);
 		
 		StackPane root = new StackPane();
 
@@ -36,19 +37,44 @@ public class Graphisme extends Application {
 		tailleCase_ = h_/Math.max(d_.getLignes(), d_.getColonnes())-1;
 
 		Case[][] matrice = d_.getCases();
-		Canvas canvas = new Canvas(h_, w_);
+		
 		Rectangle r;
+		Canvas canvas;
+		GraphicsContext gc;
+
+		ArrayList<Canvas> canvasList = new ArrayList<Canvas>();
+
 		for(int i=0; i<d_.getColonnes(); ++i){
 			for(int j=0; j<d_.getLignes(); ++j){
 				r = new Rectangle(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
 				r.setFill(matrice[i][j].getCouleur());
 				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler(d_,d_.getCase(i,j)));
 				plateau.getChildren().add(r);
+
+				if(matrice[i][j].getCouleur()!=Color.WHITE){
+					canvas = new Canvas(tailleCase_, tailleCase_);
+					gc = canvas.getGraphicsContext2D();
+					gc.setFill(Color.BLACK);
+	  				gc.setLineWidth(4);
+	  				gc.strokeLine(tailleCase_/4,tailleCase_/4,(tailleCase_)-tailleCase_/4,(tailleCase_)-tailleCase_/4);
+	  				gc.strokeLine((tailleCase_)-tailleCase_/4,tailleCase_/4,tailleCase_/4,(tailleCase_)-tailleCase_/4);
+	  				gc.strokeLine(tailleCase_/2,tailleCase_/4-tailleCase_/10,tailleCase_/2,(tailleCase_)-tailleCase_/4+tailleCase_/10);
+	  				gc.strokeLine(tailleCase_/4-tailleCase_/10,tailleCase_/2,(tailleCase_)-tailleCase_/4+tailleCase_/10,tailleCase_/2);
+	  				canvas.setTranslateX(-((h_/2)-i*(tailleCase_+1))+tailleCase_/2);
+   					canvas.setTranslateY(-((w_/2)-j*(tailleCase_+1))+tailleCase_/2);
+	  				canvasList.add(canvas);
+	  			}
+
 			}
 		}
 
-		root.getChildren().add(plateau);
+		root.getChildren().add(plateau);	
+
+		for(Canvas c : canvasList){
+			root.getChildren().add(c);	
+		}	
 		
+
 		primaryStage.setTitle("Improved-Potatoe");
 		primaryStage.setScene(scene);
 		primaryStage.show();
