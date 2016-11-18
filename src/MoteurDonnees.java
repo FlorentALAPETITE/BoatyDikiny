@@ -1,6 +1,6 @@
 import javafx.scene.paint.Color;
 import java.util.Random;
-
+import java.util.HashSet;
 
 class MoteurDonnees {
 
@@ -8,6 +8,8 @@ class MoteurDonnees {
 	private int lignes_;
 	private int colonnes_;
 	private boolean tour_;
+
+	private HashSet<ClasseUnion> unionFindSet_;
 
 	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
 
@@ -19,7 +21,7 @@ class MoteurDonnees {
 
 		for(int i=0;i<colonnes;++i){
 			for(int y=0;y<lignes;y++){
-				matriceCase_[i][y] = new Case(i,y,Color.WHITE);
+				matriceCase_[i][y] = new Case(i,y,Color.WHITE);				
 			}
 		}
 
@@ -44,6 +46,7 @@ class MoteurDonnees {
 			}
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.RED);
+			unionFindSet_.add(matriceCase_[randX][randY].getClasseUnion());
 			casesObjectifJ1-=1;			
 		}
 
@@ -59,6 +62,7 @@ class MoteurDonnees {
 			}
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.BLUE);
+			unionFindSet_.add(matriceCase_[randX][randY].getClasseUnion());
 			casesObjectifJ2-=1;			
 		}
 
@@ -95,6 +99,8 @@ class MoteurDonnees {
 	public void changeTour(){
 		tour_=!tour_;
 	}
+
+	public void makeUn
 
 	@Override
 	public String toString(){

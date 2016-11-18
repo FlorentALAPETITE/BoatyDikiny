@@ -8,6 +8,8 @@ class Case {
 
 	private Color couleur_;
 
+	private ClasseUnion unionFind_;
+
 	private boolean caseObjectif_;
 
 	public Case(int colonne, int lig, Color col){
@@ -15,6 +17,15 @@ class Case {
 		ligne_=lig;
 		couleur_=col;
 		caseObjectif_ = false;
+		if(col==Color.WHITE)
+			unionFind_=null;
+		else
+			unionFind_ = new ClasseUnion(this);
+
+	}
+
+	public ClasseUnion getClasseUnion(){
+		return unionFind_;
 	}
 
 

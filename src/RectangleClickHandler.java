@@ -34,6 +34,14 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			((Rectangle)event.getSource()).setFill(col);
 			moteurD_.changeTour();
 			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
+
+			for(int i=c_.getColonne()-1,i<c_.getColonne()+2,++i){
+				for(int j=c_.getLigne()-1,j<c_.getLigne()+2,++j){
+					if(i!= c_.getColonne() || j!=c_.getLigne()){
+						if(i>0 &&)
+					}
+				}
+			}
 		}
 
 			

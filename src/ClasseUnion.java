@@ -50,4 +50,5 @@ class ClasseUnion {
 	public String toString(){
 		return ("Représentant : ("+classe().rep_.getColonne()+","+classe().rep_.getLigne()+") ; "+"Nombre de noeuds : "+nbNoeud_);
 	}
+
 }
