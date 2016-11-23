@@ -46,6 +46,7 @@ class Case {
 	public void setCaseObjectif(Color col){
 		caseObjectif_=true;
 		couleur_=col;
+		unionFind_ = new ClasseUnion(this);
 	}
 
 	public Color getCouleur(){

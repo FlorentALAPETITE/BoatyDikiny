@@ -35,6 +35,8 @@ class MoteurDonnees {
 
 		boolean trouveCaseVide;
 
+		unionFindSet_ = new HashSet<ClasseUnion>();
+
 		while(casesObjectifJ1>0){
 			trouveCaseVide = false;
 
@@ -99,8 +101,6 @@ class MoteurDonnees {
 	public void changeTour(){
 		tour_=!tour_;
 	}
-
-	public void makeUn
 
 	@Override
 	public String toString(){

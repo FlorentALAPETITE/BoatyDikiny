@@ -29,6 +29,7 @@ public class Graphisme extends Application {
 		h_ = 800;
 		w_ = 800;
 		d_ = new MoteurDonnees(15,15,2);
+
 		
 		StackPane root = new StackPane();
 
