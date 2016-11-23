@@ -1,4 +1,5 @@
 import java.lang.*;
+import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,13 +36,16 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			moteurD_.changeTour();
 			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
 
-			// for(int i=c_.getColonne()-1,i<c_.getColonne()+2,++i){
-			// 	for(int j=c_.getLigne()-1,j<c_.getLigne()+2,++j){
-			// 		if(i!= c_.getColonne() || j!=c_.getLigne()){
-			// 			if(i>0 &&)
-			// 		}
-			// 	}
-			// }
+			ArrayList<Case> casesVoisins = moteurD_.getVoisins(c_);
+
+
+			for(Case c : casesVoisins){
+				if(c_.getCouleur() == c.getCouleur())
+					c_.getClasseUnion().union(c.getClasseUnion());
+				
+			}	
+
+			System.out.println(c_.getClasseUnion().classe());		
 		}
 
 			

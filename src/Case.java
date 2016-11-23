@@ -55,17 +55,13 @@ class Case {
 
 	public void setCouleur(Color c){
 		couleur_=c;
+		unionFind_ = new ClasseUnion(this);
 	}
 
 
 	@Override
 	public String toString(){
-		if(couleur_ == Color.BLUE)
-			return "+";
-		else if (couleur_ == Color.RED)
-			return "-";
-		else 
-			return "#";
+		return "("+colonne_+","+ligne_+") : "+couleur_;
 	}
 
 

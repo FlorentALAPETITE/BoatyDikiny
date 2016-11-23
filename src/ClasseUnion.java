@@ -15,15 +15,17 @@ class ClasseUnion {
 	}
 
 	public void union(ClasseUnion x){
-		if(nbNoeud_ > x.nbNoeud_){
-			nbNoeud_ += x.nbNoeud_;
-			fils_.add(x);
-			x.pere_ = this;
-		}else{
-			x.nbNoeud_ += nbNoeud_;
-			x.fils_.add(this);
-			pere_ = x;
-		}
+		if(x!=null){
+			if(nbNoeud_ > x.nbNoeud_){
+				nbNoeud_ += x.nbNoeud_;
+				fils_.add(x);
+				x.pere_ = this;
+			}else{
+				x.nbNoeud_ += nbNoeud_;
+				x.fils_.add(this);
+				pere_ = x;
+			}
+		}	
 	}
 
 	public ClasseUnion classe(){

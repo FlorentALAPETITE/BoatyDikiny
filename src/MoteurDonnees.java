@@ -1,6 +1,7 @@
 import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 class MoteurDonnees {
 
@@ -100,6 +101,21 @@ class MoteurDonnees {
 
 	public void changeTour(){
 		tour_=!tour_;
+	}
+
+	public ArrayList<Case> getVoisins(Case c){
+		ArrayList<Case> res = new ArrayList<Case>();
+		for(int i=c.getColonne()-1;i<c.getColonne()+2;++i){
+				for(int j=c.getLigne()-1;j<c.getLigne()+2;++j){
+
+					if(i!= c.getColonne() || j!=c.getLigne()){
+						if(i>=0 && i<colonnes_ && j>=0 && j<lignes_){
+							res.add(matriceCase_[i][j]);
+						}
+					}
+				}
+			}
+		return res;
 	}
 
 	@Override
