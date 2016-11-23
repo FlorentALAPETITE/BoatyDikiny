@@ -38,11 +38,15 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 			ArrayList<Case> casesVoisins = moteurD_.getVoisins(c_);
 
-
+			ClasseUnion c1,c2;
 			for(Case c : casesVoisins){
-				if(c_.getCouleur() == c.getCouleur())
-					c_.getClasseUnion().union(c.getClasseUnion());
-				
+				if(c_.getCouleur() == c.getCouleur()){
+					c1 = c_.getClasseUnion().classe();
+					c2 = c.getClasseUnion().classe();
+					if(c1!=c2)
+						c1.union(c2);
+				}
+					
 			}	
 
 			System.out.println(c_.getClasseUnion().classe());		
