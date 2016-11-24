@@ -1,6 +1,5 @@
 import javafx.scene.paint.Color;
 import java.util.Random;
-import java.util.HashSet;
 import java.util.ArrayList;
 
 class MoteurDonnees {
@@ -9,13 +8,15 @@ class MoteurDonnees {
 	private int lignes_;
 	private int colonnes_;
 	private boolean tour_;
+	private	int nbCasesObjectif_;
 
-	private HashSet<ClasseUnion> unionFindSet_;
+	private ArrayList<ClasseUnion> unionFindSetRed_;
+	private ArrayList<ClasseUnion> unionFindSetBlue_;
 
 	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
 
 		matriceCase_ = new Case [colonnes][lignes];
-
+		nbCasesObjectif_ = nbCasesObjectif;
 		lignes_=lignes;
 		colonnes_=colonnes;
 
@@ -36,7 +37,8 @@ class MoteurDonnees {
 
 		boolean trouveCaseVide;
 
-		unionFindSet_ = new HashSet<ClasseUnion>();
+		unionFindSetRed_ = new ArrayList<ClasseUnion>();
+		unionFindSetBlue_ = new ArrayList<ClasseUnion>();
 
 		while(casesObjectifJ1>0){
 			trouveCaseVide = false;
@@ -49,7 +51,7 @@ class MoteurDonnees {
 			}
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.RED);
-			unionFindSet_.add(matriceCase_[randX][randY].getClasseUnion());
+			unionFindSetRed_.add(matriceCase_[randX][randY].getClasseUnion());
 			casesObjectifJ1-=1;			
 		}
 
@@ -65,7 +67,7 @@ class MoteurDonnees {
 			}
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.BLUE);
-			unionFindSet_.add(matriceCase_[randX][randY].getClasseUnion());
+			unionFindSetBlue_.add(matriceCase_[randX][randY].getClasseUnion());
 			casesObjectifJ2-=1;			
 		}
 
@@ -101,6 +103,32 @@ class MoteurDonnees {
 
 	public void changeTour(){
 		tour_=!tour_;
+		testVictoire();
+	}
+
+	public void testVictoire(){
+
+		boolean rWin = false;
+		int i = 0;
+		while(i<unionFindSetRed_.size() && !rWin){
+			if(unionFindSetRed_.get(i).getNbObjectif()==nbCasesObjectif_){
+				rWin = true;
+				System.out.println("OLOLOL ROUGE Y GAGNE");
+			}
+			++i;
+		}
+
+		if(!rWin){			
+			boolean bWin = false;
+			i = 0;
+			while(i<unionFindSetBlue_.size() && !bWin){
+				if(unionFindSetBlue_.get(i).getNbObjectif()==nbCasesObjectif_){
+					bWin = true;
+					System.out.println("OLOLOL BLEU Y GAGNE");
+				}
+				++i;
+			}
+		}
 	}
 
 	public ArrayList<Case> getVoisins(Case c){
@@ -118,14 +146,50 @@ class MoteurDonnees {
 		return res;
 	}
 
+
+	public void unifierClasseUnion(ClasseUnion c1, ClasseUnion c2){
+		if(c1.getNbNoeud()>c2.getNbNoeud())	{
+			if(c1.getRep().getCouleur()==Color.RED){
+				unionFindSetRed_.remove(c2);
+				ajouterClasseUnion(c1.classe());
+			}
+			else{
+				unionFindSetBlue_.remove(c2);
+				ajouterClasseUnion(c1.classe());
+			}
+		}
+		else{
+			if(c1.getRep().getCouleur()==Color.RED){
+				unionFindSetRed_.remove(c1);
+				ajouterClasseUnion(c2.classe());
+			}
+			else{
+				unionFindSetBlue_.remove(c1);
+				ajouterClasseUnion(c2.classe());
+			}
+		}
+	}
+
+	public void ajouterClasseUnion(ClasseUnion c){
+		if(c.getRep().getCouleur() == Color.RED){
+			if(!unionFindSetRed_.contains(c))
+				unionFindSetRed_.add(c);
+		}
+		else{
+			if(!unionFindSetBlue_.contains(c))
+				unionFindSetBlue_.add(c);
+		}
+	}
+
+	
 	@Override
 	public String toString(){
 		String res="";
-		for(int i=0;i<colonnes_;++i){
-			for(int y=0;y<lignes_;y++){
-				res+=matriceCase_[i][y].toString();
-			}
-			res+="\n";
+		for(ClasseUnion cu : unionFindSetRed_){			
+			res+=cu.toString();				
+		}
+		for(ClasseUnion cu : unionFindSetBlue_){			
+			res+=cu.toString();				
 		}
 		return res;
 	}			
