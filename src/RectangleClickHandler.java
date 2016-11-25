@@ -57,7 +57,9 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 				}
 			}
 
-			moteurD_.afficheComposante(c_);		
+			moteurD_.afficheComposante(c_);
+			moteurD_.nombreEtoiles(c_);	
+			System.out.println();	
 
 					
 		}

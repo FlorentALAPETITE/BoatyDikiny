@@ -59,9 +59,16 @@ class ClasseUnion {
 		return nbObjectif_;
 	}
 
+	public String parcoursClasseUnion(){
+		String res = toString();
+		for(ClasseUnion cu : fils_)
+			res+=cu.parcoursClasseUnion();
+		return res;
+	}
+
 	@Override
 	public String toString(){
-		return ("Représentant : ("+classe().rep_.getColonne()+","+classe().rep_.getLigne()+") ; "+"Nombre de noeuds : "+nbNoeud_+", Nombre objectifs : "+nbObjectif_+"\n");
+		return ("Représentant : ("+classe().rep_.getColonne()+","+classe().rep_.getLigne()+") ; "+"Nombre de noeuds : "+nbNoeud_+", Nombre objectifs : "+nbObjectif_);
 	}
 
 }

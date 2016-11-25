@@ -84,7 +84,13 @@ class MoteurDonnees {
 
 	//2 : Affiche composante :
 	public void afficheComposante(Case c){
-		System.out.println(c.getClasseUnion().classe());
+		System.out.println(c.getClasseUnion().classe().parcoursClasseUnion());
+	}
+
+
+	//5 : Affiche nombre de cases étoiles dans c :
+	public void nombreEtoiles(Case c){
+		System.out.println("Cases étoiles : "+c.getClasseUnion().classe().getNbObjectif());
 	}
 
 	public Case[][] getCases(){
