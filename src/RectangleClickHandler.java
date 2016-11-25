@@ -18,30 +18,34 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 	private MoteurDonnees moteurD_;
 	private Case c_;
+	private ArrayList<Case> voisins_;
 
 	public RectangleClickHandler(MoteurDonnees m, Case c){
 		moteurD_ = m;
 		c_=c;
+		voisins_ = moteurD_.getVoisins(c_);
 	}
 
 	
 	public void handle(MouseEvent event){
+
 		if(c_.getCouleur()==Color.WHITE){
 			Color col; 
 			if (moteurD_.getTour())
 				col = Color.RED;
 			else
 				col = Color.BLUE;
-			((Rectangle)event.getSource()).setFill(col);
-			moteurD_.changeTour();
+			((Rectangle)event.getSource()).setFill(col);	
+						
 			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
-
-			ArrayList<Case> casesVoisins = moteurD_.getVoisins(c_);
+			
 			ClasseUnion c1,c2;
 
 			boolean seul = true;
 
-			for(Case c : casesVoisins){
+			System.out.println(relieComposantes());
+
+			for(Case c : voisins_){
 				if(c_.getCouleur() == c.getCouleur()){
 					seul = false;
 					c1 = c_.getClasseUnion().classe();
@@ -61,10 +65,28 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			moteurD_.nombreEtoiles(c_);	
 			System.out.println();	
 
-					
+			moteurD_.changeTour();	
+	
 		}
 
 			
+	}
+
+	//
+	public boolean relieComposantes(){
+		boolean res = false;
+		int i =0;
+		ClasseUnion c1,c2;
+		while(i<voisins_.size() && !res){
+			if(c_.getCouleur() == voisins_.get(i).getCouleur()){				
+				c1 = c_.getClasseUnion().classe();
+				c2 = voisins_.get(i).getClasseUnion().classe();
+				if(c1!=c2)
+					res=true;
+			}
+			++i;
+		}
+		return res;
 	}
 
 

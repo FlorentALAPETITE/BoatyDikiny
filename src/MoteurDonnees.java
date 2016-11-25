@@ -11,6 +11,9 @@ class MoteurDonnees {
 	private boolean tour_;
 	private	int nbCasesObjectif_;
 
+	private int scoreR_;
+	private int scoreB_;
+
 	private HashSet<ClasseUnion> unionFindSetRed_;
 	private HashSet<ClasseUnion> unionFindSetBlue_;
 
@@ -74,6 +77,9 @@ class MoteurDonnees {
 
 		tour_=true; // bleu
 
+		scoreR_ = 0;
+		scoreB_ = 0;
+
 
 	}
 
@@ -91,6 +97,11 @@ class MoteurDonnees {
 	//5 : Affiche nombre de cases étoiles dans c :
 	public void nombreEtoiles(Case c){
 		System.out.println("Cases étoiles : "+c.getClasseUnion().classe().getNbObjectif());
+	}
+
+	//6 : Affiche score
+	public void afficheScores(){
+		System.out.println("Score rouge : "+scoreR_+", score bleu : "+scoreB_);
 	}
 
 	public Case[][] getCases(){
@@ -121,24 +132,30 @@ class MoteurDonnees {
 	public void testVictoire(){
 
 		boolean rWin = false;
+		int nbObjCase;
 		for(ClasseUnion cu : unionFindSetRed_){
-			if(cu.getNbObjectif()==nbCasesObjectif_){
+			nbObjCase = cu.getNbObjectif();
+			if(nbObjCase>scoreR_)
+				scoreR_=nbObjCase;
+			if(nbObjCase==nbCasesObjectif_){				
 				rWin = true;
 				System.out.println("OLOLOL ROUGE Y GAGNE");
 				break;
 			}
 		}
 
-		if(!rWin){			
-			boolean bWin = false;		
+		if(!rWin){
 			for(ClasseUnion cu : unionFindSetBlue_){
-				if(cu.getNbObjectif()==nbCasesObjectif_){
-					bWin = true;
+				nbObjCase = cu.getNbObjectif();
+				if(nbObjCase>scoreB_)
+					scoreB_=nbObjCase;
+				if(nbObjCase==nbCasesObjectif_){				
 					System.out.println("OLOLOL BLEU Y GAGNE");
 					break;
 				}
 			}
 		}
+		afficheScores();
 	}
 
 	public ArrayList<Case> getVoisins(Case c){

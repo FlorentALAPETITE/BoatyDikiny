@@ -28,7 +28,7 @@ public class Graphisme extends Application {
 	public void start(Stage primaryStage) {
 		h_ = 800;
 		w_ = 800;
-		d_ = new MoteurDonnees(15,15,2);
+		d_ = new MoteurDonnees(10,10,3);
 
 		
 		StackPane root = new StackPane();
