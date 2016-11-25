@@ -1,5 +1,6 @@
 import javafx.scene.paint.Color;
 import java.util.Random;
+import java.util.HashSet;
 import java.util.ArrayList;
 
 class MoteurDonnees {
@@ -10,8 +11,8 @@ class MoteurDonnees {
 	private boolean tour_;
 	private	int nbCasesObjectif_;
 
-	private ArrayList<ClasseUnion> unionFindSetRed_;
-	private ArrayList<ClasseUnion> unionFindSetBlue_;
+	private HashSet<ClasseUnion> unionFindSetRed_;
+	private HashSet<ClasseUnion> unionFindSetBlue_;
 
 	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
 
@@ -37,8 +38,8 @@ class MoteurDonnees {
 
 		boolean trouveCaseVide;
 
-		unionFindSetRed_ = new ArrayList<ClasseUnion>();
-		unionFindSetBlue_ = new ArrayList<ClasseUnion>();
+		unionFindSetRed_ = new HashSet<ClasseUnion>();
+		unionFindSetBlue_ = new HashSet<ClasseUnion>();
 
 		while(casesObjectifJ1>0){
 			trouveCaseVide = false;
@@ -81,6 +82,11 @@ class MoteurDonnees {
 		matriceCase_[colonne][ligne].setCouleur(c);		
 	}
 
+	//2 : Affiche composante :
+	public void afficheComposante(Case c){
+		System.out.println(c.getClasseUnion().classe());
+	}
+
 	public Case[][] getCases(){
 		return matriceCase_;
 	}
@@ -109,24 +115,22 @@ class MoteurDonnees {
 	public void testVictoire(){
 
 		boolean rWin = false;
-		int i = 0;
-		while(i<unionFindSetRed_.size() && !rWin){
-			if(unionFindSetRed_.get(i).getNbObjectif()==nbCasesObjectif_){
+		for(ClasseUnion cu : unionFindSetRed_){
+			if(cu.getNbObjectif()==nbCasesObjectif_){
 				rWin = true;
 				System.out.println("OLOLOL ROUGE Y GAGNE");
+				break;
 			}
-			++i;
 		}
 
 		if(!rWin){			
-			boolean bWin = false;
-			i = 0;
-			while(i<unionFindSetBlue_.size() && !bWin){
-				if(unionFindSetBlue_.get(i).getNbObjectif()==nbCasesObjectif_){
+			boolean bWin = false;		
+			for(ClasseUnion cu : unionFindSetBlue_){
+				if(cu.getNbObjectif()==nbCasesObjectif_){
 					bWin = true;
 					System.out.println("OLOLOL BLEU Y GAGNE");
+					break;
 				}
-				++i;
 			}
 		}
 	}

@@ -56,7 +56,8 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					moteurD_.ajouterClasseUnion(c_.getClasseUnion());
 				}
 			}
-			System.out.println(moteurD_);
+
+			moteurD_.afficheComposante(c_);		
 
 					
 		}
