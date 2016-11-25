@@ -208,7 +208,40 @@ class MoteurDonnees {
 		}
 	}
 
-	
+	public int[][] inondation(Case c){
+		int[][] res = new int[colonnes_][lignes_];
+		int step = 1;
+		res[c.getLigne()][c.getColonne()] = step;
+
+		boolean done = false;
+		ArrayList<Case> aModifier = getVoisins(c);
+		ArrayList< ArrayList<Case> > modifies = new ArrayList< ArrayList<Case> >();
+
+		ArrayList<Case> aAjouter;
+		while(!done){
+			++step;
+			aAjouter = new ArrayList<Case>();
+			
+			for(Case voisin : aModifier){
+				res[voisin.getLigne()][voisin.getColonne()] = step;
+				aAjouter.add(voisin);
+			}
+			modifies.add(aAjouter);
+
+			aModifier = new ArrayList<Case>();
+			for(Case caca : modifies.get(modifies.size()-1)){
+				for(Case voisin : getVoisins(caca)){
+					if(res[voisin.getLigne()][voisin.getColonne()] > step)
+						aModifier.add(voisin);
+				}
+			}
+			if(aModifier.size()==0)
+				done = true;
+		}
+
+		return res;
+	}
+
 	@Override
 	public String toString(){
 		String res="";
