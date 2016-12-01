@@ -63,12 +63,13 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 			moteurD_.afficheComposante(c_);
 			moteurD_.nombreEtoiles(c_);	
-			int[][] moncul = moteurD_.inondation(c_);
-			for(int[] i1 : moncul){
-				for(int i2 : i1)
-					System.out.print(i2+" ");
-				System.out.println();
+			
+			ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
+
+			for(Case court : plusCourtCommeTaBite){
+				System.out.println(court);
 			}
+
 			moteurD_.changeTour();	
 	
 		}
