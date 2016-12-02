@@ -93,6 +93,23 @@ class MoteurDonnees {
 		System.out.println(c.getClasseUnion().classe().parcoursClasseUnion());
 	}
 
+	//3 : Dit s'il existe un chemin entre deux cases :
+	public void existeCheminCases(Case c1, Case c2){
+		ArrayList<Case> chemin = plusCourtChemin(c1, c2);
+		System.out.println(!(chemin.size()==0));
+	}
+
+	//4 : Donne le nombre min de case à colorier pour relier deux cases
+	public void relierCasesMin(Case c1, Case c2){
+		ArrayList<Case> chemin = plusCourtChemin(c1,c2);
+		ArrayList<Case> minCaseColorier = new ArrayList<Case>();
+		for(Case c : chemin){
+			if(c.getCouleur() != c1.getCouleur()){
+				minCaseColorier.add(c);
+				System.out.println(c);
+			}
+		}
+	}
 
 	//5 : Affiche nombre de cases étoiles dans c :
 	public void nombreEtoiles(Case c){
@@ -244,8 +261,6 @@ class MoteurDonnees {
 		return res;
 	}
 
-
-
 	public ArrayList<Case> plusCourtChemin(Case c1, Case c2){
 		int [] [] inond = inondation(c1);
 
@@ -261,6 +276,7 @@ class MoteurDonnees {
 				boolean found = false;
 				Case minCase = voisins.get(j);
 				int currentValue;
+
 				while(j<voisins.size() && !found){
 					minCase = voisins.get(j);
 					currentValue = inond[minCase.getColonne()][minCase.getLigne()];
@@ -285,8 +301,8 @@ class MoteurDonnees {
 					}
 
 					res.add(minCase);
-					System.out.println(minValue);
 				}
+
 			}while(minValue != 1 && !noPath);
 		}
 		if(res.size()>1)

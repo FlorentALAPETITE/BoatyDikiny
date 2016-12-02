@@ -63,12 +63,9 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 			moteurD_.afficheComposante(c_);
 			moteurD_.nombreEtoiles(c_);	
-			
+			moteurD_.existeCheminCases(c_,moteurD_.getCase(0,0));
+			moteurD_.relierCasesMin(c_,moteurD_.getCase(0,0));
 			ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
-
-			for(Case court : plusCourtCommeTaBite){
-				System.out.println(court);
-			}
 
 			moteurD_.changeTour();	
 	
@@ -77,7 +74,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			
 	}
 
-	//
+	// 7
 	public boolean relieComposantes(){
 		boolean res = false;
 		int i =0;
