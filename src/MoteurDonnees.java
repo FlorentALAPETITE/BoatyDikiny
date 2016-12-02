@@ -249,39 +249,50 @@ class MoteurDonnees {
 	public ArrayList<Case> plusCourtChemin(Case c1, Case c2){
 		int [] [] inond = inondation(c1);
 
-		int valeurActuelle = inond[c2.getLigne()][c2.getColonne()];
-
 		ArrayList<Case> res = new ArrayList<Case>();
-
-		Case caseActuelle = c2;
-		ArrayList<Case> voisins;
-		int minVoisin;
-
-		Case minCase;
-
-		while(valeurActuelle>1){
-			voisins = getVoisins(caseActuelle);
-			minCase = voisins.get(0);
-			minVoisin = inond[voisins.get(0).getLigne()][voisins.get(0).getColonne()];
-			System.out.println(valeurActuelle);
-			for(int i=1;i<voisins.size();++i){
-				if(inond[voisins.get(i).getLigne()][voisins.get(i).getColonne()]<minVoisin){
-					minVoisin = inond[voisins.get(i).getLigne()][voisins.get(i).getColonne()];
-					minCase = voisins.get(i);
+		if(!(c1.getCouleur() == Color.BLUE && c2.getCouleur() == Color.RED) && !(c2.getCouleur() == Color.BLUE && c1.getCouleur() == Color.RED)){
+			res.add(c2);
+			long minValue = 999999999;
+			boolean noPath = false;
+			do{
+				Case currentCase = res.get(res.size()-1);
+				ArrayList<Case> voisins = getVoisins(currentCase);
+				int j = 0;
+				boolean found = false;
+				Case minCase = voisins.get(j);
+				int currentValue;
+				while(j<voisins.size() && !found){
+					minCase = voisins.get(j);
+					currentValue = inond[minCase.getColonne()][minCase.getLigne()];
+					if(currentValue > 0){
+						minValue = currentValue;
+						found = true;
+					}else{
+						++j;
+					}
 				}
-			}
-			if(minVoisin>=valeurActuelle){
-				valeurActuelle = 0;
-				res = new ArrayList<Case>();
-			}
-			else {
-				res.add(minCase);
-				caseActuelle = minCase;
-				valeurActuelle = minVoisin;
-			}
-		}
 
-		return res;
+				noPath = !found;
+				if(found){
+					for(int i=j+1; i<voisins.size(); ++i){
+
+						Case caseVoisine = voisins.get(i);
+						currentValue = inond[caseVoisine.getColonne()][caseVoisine.getLigne()];
+						if(currentValue < minValue && currentValue > 0){
+							minCase = caseVoisine;
+							minValue = currentValue;
+						}
+					}
+
+					res.add(minCase);
+					System.out.println(minValue);
+				}
+			}while(minValue != 1 && !noPath);
+		}
+		if(res.size()>1)
+			return res;
+		else
+			return new ArrayList<Case>();
 	}
 
 	@Override
