@@ -208,7 +208,82 @@ class MoteurDonnees {
 		}
 	}
 
-	
+	public int[][] inondation(Case c){
+		int[][] res = new int[colonnes_][lignes_];
+		int step = 1;
+		res[c.getLigne()][c.getColonne()] = step;
+
+		boolean done = false;
+		ArrayList<Case> aModifier = getVoisins(c);
+		ArrayList< ArrayList<Case> > modifies = new ArrayList< ArrayList<Case> >();
+
+		ArrayList<Case> aAjouter;
+		while(!done){
+			++step;
+			aAjouter = new ArrayList<Case>();
+			
+			for(Case voisin : aModifier){
+				if(voisin.getCouleur() == Color.WHITE || voisin.getCouleur() == c.getCouleur()){
+					res[voisin.getLigne()][voisin.getColonne()] = step;
+					aAjouter.add(voisin);
+				}
+			}
+			modifies.add(aAjouter);
+
+			aModifier = new ArrayList<Case>();
+			for(Case caca : modifies.get(modifies.size()-1)){
+				for(Case voisin : getVoisins(caca)){
+					if(res[voisin.getLigne()][voisin.getColonne()] == 0)
+						aModifier.add(voisin);
+				}
+			}
+			if(aModifier.size()==0)
+				done = true;
+		}
+
+		return res;
+	}
+
+
+
+	public ArrayList<Case> plusCourtChemin(Case c1, Case c2){
+		int [] [] inond = inondation(c1);
+
+		int valeurActuelle = inond[c2.getLigne()][c2.getColonne()];
+
+		ArrayList<Case> res = new ArrayList<Case>();
+
+		Case caseActuelle = c2;
+		ArrayList<Case> voisins;
+		int minVoisin;
+
+		Case minCase;
+
+		while(valeurActuelle>1){
+			voisins = getVoisins(caseActuelle);
+			minCase = voisins.get(0);
+			minVoisin = inond[voisins.get(0).getLigne()][voisins.get(0).getColonne()];
+			System.out.println(valeurActuelle);
+			for(int i=1;i<voisins.size();++i){
+				if(inond[voisins.get(i).getLigne()][voisins.get(i).getColonne()]<minVoisin){
+					minVoisin = inond[voisins.get(i).getLigne()][voisins.get(i).getColonne()];
+					minCase = voisins.get(i);
+				}
+			}
+			if(minVoisin>=valeurActuelle){
+				valeurActuelle = 0;
+				res = new ArrayList<Case>();
+			}
+			else {
+				res.add(minCase);
+				caseActuelle = minCase;
+				valeurActuelle = minVoisin;
+			}
+		}
+
+		return res;
+	}
+
 	@Override
 	public String toString(){
 		String res="";

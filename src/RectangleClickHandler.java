@@ -35,7 +35,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 				col = Color.RED;
 			else
 				col = Color.BLUE;
-			((Rectangle)event.getSource()).setFill(col);	
+			((Rectangle)event.getSource()).setFill(col);
 						
 			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
 			
@@ -63,7 +63,12 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 			moteurD_.afficheComposante(c_);
 			moteurD_.nombreEtoiles(c_);	
-			System.out.println();	
+			
+			ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
+
+			for(Case court : plusCourtCommeTaBite){
+				System.out.println(court);
+			}
 
 			moteurD_.changeTour();	
 	
@@ -78,7 +83,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 		int i =0;
 		ClasseUnion c1,c2;
 		while(i<voisins_.size() && !res){
-			if(c_.getCouleur() == voisins_.get(i).getCouleur()){				
+			if(c_.getCouleur() == voisins_.get(i).getCouleur()){
 				c1 = c_.getClasseUnion().classe();
 				c2 = voisins_.get(i).getClasseUnion().classe();
 				if(c1!=c2)
