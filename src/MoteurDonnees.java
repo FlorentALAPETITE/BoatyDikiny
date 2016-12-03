@@ -89,8 +89,11 @@ class MoteurDonnees {
 	}
 
 	//2 : Affiche composante :
-	public void afficheComposante(Case c){
-		System.out.println(c.getClasseUnion().classe().parcoursClasseUnion());
+	public ArrayList<ClasseUnion> afficheComposante(Case c){
+		if(c.getCouleur()!=Color.WHITE)
+			return c.getClasseUnion().classe().parcoursClasseUnion();
+		else
+			return new ArrayList<ClasseUnion>();
 	}
 
 	//3 : Dit s'il existe un chemin entre deux cases :

@@ -3,17 +3,17 @@ import java.util.*;
 class ClasseUnion {
 
 	private int nbNoeud_;
-	private Case rep_;
+	private Case case_;
 	private ClasseUnion pere_;
 	private ArrayList<ClasseUnion> fils_;
 	private int nbObjectif_;
 
 	public ClasseUnion(Case rep){
-		rep_ = rep;
+		case_ = rep;
 		nbNoeud_ = 1;
 		pere_ = null;
 		fils_ = new ArrayList<ClasseUnion>();
-		if(rep_.testCaseObjectif())
+		if(case_.testCaseObjectif())
 			nbObjectif_ = 1;
 		else
 			nbObjectif_=0;
@@ -44,7 +44,7 @@ class ClasseUnion {
 	}
 
 	public Case getRep(){
-		return rep_;
+		return case_;
 	}
 
 	public int getNbNoeud(){
@@ -59,16 +59,17 @@ class ClasseUnion {
 		return nbObjectif_;
 	}
 
-	public String parcoursClasseUnion(){
-		String res = toString();
+	public ArrayList<ClasseUnion> parcoursClasseUnion(){
+		ArrayList<ClasseUnion> res = new ArrayList<ClasseUnion>();
+		res.add(this);
 		for(ClasseUnion cu : fils_)
-			res+=cu.parcoursClasseUnion();
+			res.addAll(cu.parcoursClasseUnion());
 		return res;
 	}
 
 	@Override
 	public String toString(){
-		return ("Représentant : ("+classe().rep_.getColonne()+","+classe().rep_.getLigne()+") ; "+"Nombre de noeuds : "+nbNoeud_+", Nombre objectifs : "+nbObjectif_);
+		return ("Représentant : ("+classe().case_.getColonne()+","+classe().case_.getLigne()+") ; "+"Nombre de noeuds : "+nbNoeud_+", Nombre objectifs : "+nbObjectif_);
 	}
 
 }

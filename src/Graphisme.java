@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
-
+import java.io.File;
 import javafx.scene.layout.GridPane;
 
 
@@ -30,6 +30,9 @@ public class Graphisme extends Application {
 	private Spinner<Integer> spinnerColonne;
 	private Spinner<Integer> spinnerLigne;
 	private Spinner<Integer> spinnerObjectif;
+	private ArrayList< ArrayList<Rectangle>> rectangleList;
+
+	private String selectedButton;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -87,7 +90,7 @@ public class Graphisme extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
-	
+		
 	}
 
 
@@ -96,13 +99,15 @@ public class Graphisme extends Application {
 		d_ = new MoteurDonnees(nbLignes,nbColonnes,nbObj);
 
 		h_ = 800;
-		w_ = 800;
+		w_ = 800;	
+
+		selectedButton = "";
 
 		StackPane root = new StackPane();
 
 		Pane plateau = new Pane();
 		plateau.setStyle("-fx-background-color: black;");
-		Scene scene = new Scene(root, h_+300, w_, Color.RED);
+		Scene scene = new Scene(root, h_+300, w_);
 		
 		tailleCase_ = h_/Math.max(d_.getLignes(), d_.getColonnes())-1;
 
@@ -114,11 +119,38 @@ public class Graphisme extends Application {
 
 		ArrayList<Canvas> canvasList = new ArrayList<Canvas>();
 
+		rectangleList = new ArrayList< ArrayList<Rectangle>>();
+
 		for(int i=0; i<d_.getColonnes(); ++i){
+			rectangleList.add(new ArrayList<Rectangle>());
 			for(int j=0; j<d_.getLignes(); ++j){
 				r = new Rectangle(i*(tailleCase_+1), j*(tailleCase_+1), tailleCase_, tailleCase_);
 				r.setFill(matrice[i][j].getCouleur());
-				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler(d_,d_.getCase(i,j)));
+				r.addEventHandler(MouseEvent.MOUSE_PRESSED,new RectangleClickHandler(d_,d_.getCase(i,j),this));
+
+								
+
+				r.setOnMouseEntered(new EventHandler<MouseEvent>
+			    () {
+
+			        @Override
+			        public void handle(MouseEvent event) {
+			        	if(((Rectangle)event.getSource()).getFill()==Color.WHITE)			          	 
+			          		((Rectangle)event.getSource()).setFill(Color.LEMONCHIFFON);			           
+			        }
+			    });
+
+			    r.setOnMouseExited(new EventHandler<MouseEvent>
+			    () {
+
+			        @Override
+			        public void handle(MouseEvent event) {
+			        	if(((Rectangle)event.getSource()).getFill()==Color.LEMONCHIFFON)
+			           		((Rectangle)event.getSource()).setFill(Color.WHITE);
+			        }
+			    });
+
+			    rectangleList.get(i).add(r);
 				plateau.getChildren().add(r);
 
 				if(matrice[i][j].getCouleur()!=Color.WHITE){
@@ -149,13 +181,39 @@ public class Graphisme extends Application {
 		testingMenu.setTranslateX(400);
 		testingMenu.setLayoutY(0);
 		gc = testingMenu.getGraphicsContext2D();
-		gc.setFill(Color.GREY);
+		gc.setFill(Color.LIGHTGREY);
 		gc.fillRect(0, 0, testingMenu.getWidth(), testingMenu.getHeight());
 
 
-	
+		Pane buttonPane = new Pane();
+		buttonPane.setTranslateX(800);
 
-		root.getChildren().add(testingMenu);	
+		Button bComposante = new Button();
+        bComposante.setText("afficheComposante");
+        bComposante.setStyle("-fx-background-color: #FFFAFA");
+        bComposante.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(getSelectedButton()!="afficheComposante"){
+                	setSelectedButton("afficheComposante");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+            	}
+            	else{
+            		setSelectedButton("");
+            		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+            	}
+              
+            }
+        });       
+        bComposante.setTranslateX(70);
+        bComposante.setTranslateY(170);
+        bComposante.setPrefSize(175,45);
+        buttonPane.getChildren().add(bComposante);	
+		
+		
+		root.getChildren().add(testingMenu);
+		root.getChildren().add(buttonPane);
+		
 	
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -163,10 +221,22 @@ public class Graphisme extends Application {
 	}
 
 
+	public String getSelectedButton(){
+		return selectedButton;
+	}
+
+	public void setSelectedButton(String b){
+		selectedButton = b;
+	}
+
 	public void saveParameters(){
 		nbLignes = spinnerLigne.getValue().intValue();
 		nbColonnes = spinnerColonne.getValue().intValue();
 		nbObj = spinnerObjectif.getValue().intValue();
 	}
 
+
+	public Rectangle getRectangle(int x, int y){
+		return rectangleList.get(y).get(x);
+	}
 }

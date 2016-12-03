@@ -19,57 +19,97 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 	private MoteurDonnees moteurD_;
 	private Case c_;
 	private ArrayList<Case> voisins_;
+	private Graphisme graphisme_;
 
-	public RectangleClickHandler(MoteurDonnees m, Case c){
+	public RectangleClickHandler(MoteurDonnees m, Case c, Graphisme g){
 		moteurD_ = m;
 		c_=c;
 		voisins_ = moteurD_.getVoisins(c_);
+		graphisme_ = g;
 	}
 
 	
 	public void handle(MouseEvent event){
 
-		if(c_.getCouleur()==Color.WHITE){
-			Color col; 
-			if (moteurD_.getTour())
-				col = Color.RED;
-			else
-				col = Color.BLUE;
-			((Rectangle)event.getSource()).setFill(col);
-						
-			moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
-			
-			ClasseUnion c1,c2;
+		switch (graphisme_.getSelectedButton()) {
+			case "":
+				if(c_.getCouleur()==Color.WHITE){
+					Color col; 
+					if (moteurD_.getTour())
+						col = Color.RED;
+					else
+						col = Color.BLUE;
+					((Rectangle)event.getSource()).setFill(col);
+								
+					moteurD_.colorerCase(c_.getColonne(),c_.getLigne(),col);
+					
+					ClasseUnion c1,c2;
 
-			boolean seul = true;
+					boolean seul = true;
 
-			System.out.println(relieComposantes());
+					System.out.println(relieComposantes());
 
-			for(Case c : voisins_){
-				if(c_.getCouleur() == c.getCouleur()){
-					seul = false;
-					c1 = c_.getClasseUnion().classe();
-					c2 = c.getClasseUnion().classe();
-					if(c1!=c2){
-						c1.union(c2);
-						moteurD_.unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+					for(Case c : voisins_){
+						if(c_.getCouleur() == c.getCouleur()){
+							seul = false;
+							c1 = c_.getClasseUnion().classe();
+							c2 = c.getClasseUnion().classe();
+							if(c1!=c2){
+								c1.union(c2);
+								moteurD_.unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+							}
+
+						}
+						if(seul){
+							moteurD_.ajouterClasseUnion(c_.getClasseUnion());
+						}
 					}
 
-				}
-				if(seul){
-					moteurD_.ajouterClasseUnion(c_.getClasseUnion());
-				}
-			}
+					
+					moteurD_.nombreEtoiles(c_);	
+					moteurD_.existeCheminCases(c_,moteurD_.getCase(0,0));
+					moteurD_.relierCasesMin(c_,moteurD_.getCase(0,0));
+					ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
 
-			moteurD_.afficheComposante(c_);
-			moteurD_.nombreEtoiles(c_);	
-			moteurD_.existeCheminCases(c_,moteurD_.getCase(0,0));
-			moteurD_.relierCasesMin(c_,moteurD_.getCase(0,0));
-			ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
+					moteurD_.changeTour();			
+				}
+				break;
 
-			moteurD_.changeTour();	
-	
+			case "afficheComposante":
+				final ArrayList<ClasseUnion> composantes = moteurD_.afficheComposante(c_);
+
+				if(composantes!=null){
+					for(ClasseUnion cu : composantes){						
+						graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(6);
+						graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.YELLOW);
+					}
+				}
+
+				Thread t = new Thread(){
+
+					public void run(){
+						try{
+							sleep(4000);
+							for(ClasseUnion cu : composantes){								
+								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.WHITE);
+							}
+						} catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+					
+				};
+
+				
+				t.start();
+				
+
+				break;
+
+			
 		}
+		
 
 			
 	}
