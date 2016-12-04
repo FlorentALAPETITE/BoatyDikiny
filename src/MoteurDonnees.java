@@ -97,9 +97,9 @@ class MoteurDonnees {
 	}
 
 	//3 : Dit s'il existe un chemin entre deux cases :
-	public void existeCheminCases(Case c1, Case c2){
+	public boolean existeCheminCases(Case c1, Case c2){
 		ArrayList<Case> chemin = plusCourtChemin(c1, c2);
-		System.out.println(!(chemin.size()==0));
+		return !(chemin.size()==0);
 	}
 
 	//4 : Donne le nombre min de case à colorier pour relier deux cases

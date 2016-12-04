@@ -34,6 +34,13 @@ public class Graphisme extends Application {
 
 	private String selectedButton;
 
+	private Button bComposante;
+
+	private Button bExisteChemin;
+	private Label existeCheminLabel;
+
+	private Button bPlusCourtChemin;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -188,13 +195,14 @@ public class Graphisme extends Application {
 		Pane buttonPane = new Pane();
 		buttonPane.setTranslateX(800);
 
-		Button bComposante = new Button();
+		bComposante = new Button();
         bComposante.setText("afficheComposante");
         bComposante.setStyle("-fx-background-color: #FFFAFA");
         bComposante.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
             	if(getSelectedButton()!="afficheComposante"){
+            		resetButtonColor();
                 	setSelectedButton("afficheComposante");
                 	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
             	}
@@ -206,10 +214,66 @@ public class Graphisme extends Application {
             }
         });       
         bComposante.setTranslateX(70);
-        bComposante.setTranslateY(170);
+        bComposante.setTranslateY(80);
         bComposante.setPrefSize(175,45);
         buttonPane.getChildren().add(bComposante);	
-		
+
+
+        bExisteChemin = new Button();
+        bExisteChemin.setText("existeCheminCases");
+        bExisteChemin.setStyle("-fx-background-color: #FFFAFA");
+        bExisteChemin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(getSelectedButton()!="existeCheminCases"){
+            		resetButtonColor();
+                	setSelectedButton("existeCheminCases");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+            	}
+            	else{
+            		setSelectedButton("");
+            		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+            	}
+              
+            }
+        });       
+        bExisteChemin.setTranslateX(35);
+        bExisteChemin.setTranslateY(160);
+        bExisteChemin.setPrefSize(150,45);
+        buttonPane.getChildren().add(bExisteChemin);	
+
+        existeCheminLabel = new Label("");
+        existeCheminLabel.setTranslateX(220);
+        existeCheminLabel.setTranslateY(160);
+        existeCheminLabel.setPrefSize(50,45);
+		buttonPane.getChildren().add(existeCheminLabel);	
+
+
+
+		// bPlusCourtChemin = new Button();
+  //       bPlusCourtChemin.setText("existeCheminCases");
+  //       bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
+  //       bPlusCourtChemin.setOnAction(new EventHandler<ActionEvent>() {
+  //           @Override
+  //           public void handle(ActionEvent event) {
+  //           	if(getSelectedButton()!="existeCheminCases"){
+  //           		resetButtonColor();
+  //               	setSelectedButton("existeCheminCases");
+  //               	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+  //           	}
+  //           	else{
+  //           		setSelectedButton("");
+  //           		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+  //           	}
+              
+  //           }
+  //       });       
+  //       bPlusCourtChemin.setTranslateX(35);
+  //       bPlusCourtChemin.setTranslateY(160);
+  //       bPlusCourtChemin.setPrefSize(150,45);
+  //       buttonPane.getChildren().add(bPlusCourtChemin);	
+
+
 		
 		root.getChildren().add(testingMenu);
 		root.getChildren().add(buttonPane);
@@ -218,6 +282,11 @@ public class Graphisme extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	
+	}
+
+	public void resetButtonColor(){
+		bExisteChemin.setStyle("-fx-background-color: #FFFAFA");
+		bComposante.setStyle("-fx-background-color: #FFFAFA");
 	}
 
 
@@ -238,5 +307,10 @@ public class Graphisme extends Application {
 
 	public Rectangle getRectangle(int x, int y){
 		return rectangleList.get(y).get(x);
+	}
+
+
+	public void changeExisteCheminLabel(String msg){
+		existeCheminLabel.setText(msg);
 	}
 }

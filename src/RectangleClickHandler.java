@@ -21,6 +21,9 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 	private ArrayList<Case> voisins_;
 	private Graphisme graphisme_;
 
+	private static Case selected1 = null;
+	private static Case selected2 = null;
+
 	public RectangleClickHandler(MoteurDonnees m, Case c, Graphisme g){
 		moteurD_ = m;
 		c_=c;
@@ -66,8 +69,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					}
 
 					
-					moteurD_.nombreEtoiles(c_);	
-					moteurD_.existeCheminCases(c_,moteurD_.getCase(0,0));
+					moteurD_.nombreEtoiles(c_);						
 					moteurD_.relierCasesMin(c_,moteurD_.getCase(0,0));
 					ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
 
@@ -89,7 +91,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 					public void run(){
 						try{
-							sleep(4000);
+							sleep(3500);
 							for(ClasseUnion cu : composantes){								
 								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(0);
 								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.WHITE);
@@ -103,7 +105,66 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 				
 				t.start();
-				
+
+				graphisme_.resetButtonColor();
+				graphisme_.setSelectedButton("");			
+
+				break;
+
+
+
+
+			case "existeCheminCases":
+				if(selected1==null && selected2==null){
+					selected1 = c_;
+					graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStrokeWidth(6);
+					graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.CHARTREUSE);
+
+				}
+				else{
+					if(selected1!=null && selected2==null){
+						selected2 = c_;
+						graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStrokeWidth(6);
+						graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.CHARTREUSE);
+
+						boolean existeChemin = moteurD_.existeCheminCases(selected1,selected2);
+
+						System.out.println(existeChemin);
+
+						if(existeChemin)
+							graphisme_.changeExisteCheminLabel("OUI");
+						else
+							graphisme_.changeExisteCheminLabel("NON");
+
+
+						Thread t2 = new Thread(){
+
+						public void run(){
+							try{
+								sleep(3500);																
+								graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.WHITE);
+								graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.WHITE);
+
+								
+								
+								
+							} catch(Exception e){
+								e.printStackTrace();
+							}
+
+						}
+					};
+
+					t2.start();
+					graphisme_.resetButtonColor();
+					selected1 = null;
+					selected2 = null;
+					graphisme_.setSelectedButton("");	
+
+					}
+				}
 
 				break;
 
