@@ -202,11 +202,13 @@ public class Graphisme extends Application {
             @Override
             public void handle(ActionEvent event) {
             	if(getSelectedButton()!="afficheComposante"){
+            		cleanSelected();
             		resetButtonColor();
                 	setSelectedButton("afficheComposante");
                 	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
             	}
             	else{
+            		cleanSelected();
             		setSelectedButton("");
             		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
             	}
@@ -226,12 +228,14 @@ public class Graphisme extends Application {
             @Override
             public void handle(ActionEvent event) {
             	if(getSelectedButton()!="existeCheminCases"){
-            		resetButtonColor();
+            		cleanSelected();
+            		resetButtonColor();            		
                 	setSelectedButton("existeCheminCases");
                 	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
             	}
             	else{
             		setSelectedButton("");
+            		cleanSelected();
             		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
             	}
               
@@ -250,28 +254,30 @@ public class Graphisme extends Application {
 
 
 
-		// bPlusCourtChemin = new Button();
-  //       bPlusCourtChemin.setText("existeCheminCases");
-  //       bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
-  //       bPlusCourtChemin.setOnAction(new EventHandler<ActionEvent>() {
-  //           @Override
-  //           public void handle(ActionEvent event) {
-  //           	if(getSelectedButton()!="existeCheminCases"){
-  //           		resetButtonColor();
-  //               	setSelectedButton("existeCheminCases");
-  //               	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
-  //           	}
-  //           	else{
-  //           		setSelectedButton("");
-  //           		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
-  //           	}
+		bPlusCourtChemin = new Button();
+        bPlusCourtChemin.setText("relierCasesMin");
+        bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
+        bPlusCourtChemin.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(getSelectedButton()!="relierCasesMin"){
+            		cleanSelected();
+            		resetButtonColor();
+                	setSelectedButton("relierCasesMin");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+            	}
+            	else{
+            		cleanSelected();
+            		setSelectedButton("");
+            		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+            	}
               
-  //           }
-  //       });       
-  //       bPlusCourtChemin.setTranslateX(35);
-  //       bPlusCourtChemin.setTranslateY(160);
-  //       bPlusCourtChemin.setPrefSize(150,45);
-  //       buttonPane.getChildren().add(bPlusCourtChemin);	
+            }
+        });       
+        bPlusCourtChemin.setTranslateX(70);
+        bPlusCourtChemin.setTranslateY(240);
+        bPlusCourtChemin.setPrefSize(175,45);
+        buttonPane.getChildren().add(bPlusCourtChemin);	
 
 
 		
@@ -287,6 +293,7 @@ public class Graphisme extends Application {
 	public void resetButtonColor(){
 		bExisteChemin.setStyle("-fx-background-color: #FFFAFA");
 		bComposante.setStyle("-fx-background-color: #FFFAFA");
+		bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
 	}
 
 
@@ -312,5 +319,23 @@ public class Graphisme extends Application {
 
 	public void changeExisteCheminLabel(String msg){
 		existeCheminLabel.setText(msg);
+	}
+
+
+	public void cleanSelected(){
+
+		Case selected1 = RectangleClickHandler.getSelected1();
+		Case selected2 = RectangleClickHandler.getSelected2();
+
+		if(selected1!=null){
+			getRectangle(selected1.getLigne(),selected1.getColonne()).setStrokeWidth(0);
+			getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.WHITE);
+		}
+
+		if(selected2!=null){
+			getRectangle(selected2.getLigne(),selected2.getColonne()).setStrokeWidth(0);
+			getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.WHITE);
+		}
+		RectangleClickHandler.resetSelected();
 	}
 }

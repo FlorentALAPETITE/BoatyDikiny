@@ -103,15 +103,16 @@ class MoteurDonnees {
 	}
 
 	//4 : Donne le nombre min de case à colorier pour relier deux cases
-	public void relierCasesMin(Case c1, Case c2){
+	public ArrayList<Case> relierCasesMin(Case c1, Case c2){
 		ArrayList<Case> chemin = plusCourtChemin(c1,c2);
 		ArrayList<Case> minCaseColorier = new ArrayList<Case>();
 		for(Case c : chemin){
 			if(c.getCouleur() != c1.getCouleur()){
-				minCaseColorier.add(c);
-				System.out.println(c);
+				minCaseColorier.add(c);				
 			}
 		}
+
+		return minCaseColorier;
 	}
 
 	//5 : Affiche nombre de cases étoiles dans c :
