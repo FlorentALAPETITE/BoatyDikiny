@@ -293,8 +293,14 @@ class MoteurDonnees {
 			for(Case v: getVoisins(current.getCase())){
 				if(!closedList.contains(new AEtoile(v, current, -1, -1))){
 					if(v.getCouleur() == Color.WHITE || v.getCouleur() == c1.getCouleur()){
+
 						double heuristique = Math.abs(v.getColonne()-c2.getColonne())+Math.abs(v.getLigne()-c2.getLigne());
-						AEtoile toAdd = new AEtoile(v, current, current.getG()+10, heuristique);
+						AEtoile toAdd;
+						if(v.getCouleur() == Color.WHITE)
+							toAdd = new AEtoile(v, current, current.getG()+10, heuristique);
+						else
+							toAdd = new AEtoile(v, current, current.getG(), heuristique);
+
 						if(!openList.contains(toAdd)){
 							openList.add(toAdd);
 						}
@@ -312,7 +318,7 @@ class MoteurDonnees {
 
 		if(targetIndex == -1)
 			return new ArrayList<Case>();
-		
+
 		target = closedList.get(targetIndex);
 
 		ArrayList<Case> res = new ArrayList<Case>();
