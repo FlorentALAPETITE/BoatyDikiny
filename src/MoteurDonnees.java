@@ -2,6 +2,7 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 import java.util.HashSet;
 import java.util.ArrayList;
+import java.lang.Math;
 
 class MoteurDonnees {
 
@@ -269,7 +270,63 @@ class MoteurDonnees {
 	}
 
 	public ArrayList<Case> plusCourtChemin(Case c1, Case c2){
-		int [] [] inond = inondation(c1);
+
+		ArrayList<AEtoile> openList = new ArrayList<AEtoile>();
+		ArrayList<AEtoile> closedList = new ArrayList<AEtoile>();
+
+		double minValue;
+		AEtoile current;
+		openList.add(new AEtoile(c1, null, -1,-1));
+		AEtoile target = new AEtoile(c2, null, -1, -1);
+		while(openList.size() > 0 && !closedList.contains(target)){
+			current = openList.get(0);
+			minValue = current.getF();
+			for(AEtoile ae : openList){
+				if(ae.getF()<minValue){
+					current = ae;
+					minValue = ae.getF();
+				}
+			}
+			openList.remove(current);
+			closedList.add(current);
+
+			for(Case v: getVoisins(current.getCase())){
+				if(!closedList.contains(new AEtoile(v, current, -1, -1))){
+					if(v.getCouleur() == Color.WHITE || v.getCouleur() == c1.getCouleur()){
+						double heuristique = Math.abs(v.getColonne()-c2.getColonne())+Math.abs(v.getLigne()-c2.getLigne());
+						AEtoile toAdd = new AEtoile(v, current, current.getG()+10, heuristique);
+						if(!openList.contains(toAdd)){
+							openList.add(toAdd);
+						}
+						else {
+							int index = openList.indexOf(toAdd);
+							if (current.getG()+10<openList.get(index).getG())
+							openList.get(index).update(current.getG()+10, openList.get(index).getH());
+						}
+					}
+				}
+			}
+		}
+
+		int targetIndex = closedList.indexOf(target);
+
+		if(targetIndex == -1)
+			return new ArrayList<Case>();
+		
+		target = closedList.get(targetIndex);
+
+		ArrayList<Case> res = new ArrayList<Case>();
+		res.add(target.getCase());
+
+		AEtoile parent = target.getParent();
+
+		while(parent != null){
+			res.add(parent.getCase());
+			parent = parent.getParent();
+		}
+
+		return res;
+		/*int [] [] inond = inondation(c1);
 
 		ArrayList<Case> res = new ArrayList<Case>();
 		if(!(c1.getCouleur() == Color.BLUE && c2.getCouleur() == Color.RED) && !(c2.getCouleur() == Color.BLUE && c1.getCouleur() == Color.RED)){
@@ -315,7 +372,7 @@ class MoteurDonnees {
 		if(res.size()>1)
 			return res;
 		else
-			return new ArrayList<Case>();
+			return new ArrayList<Case>();*/
 	}
 
 	@Override

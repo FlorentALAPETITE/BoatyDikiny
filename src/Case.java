@@ -58,6 +58,11 @@ class Case {
 		unionFind_ = new ClasseUnion(this);
 	}
 
+	@Override
+	public boolean equals(Object o){
+		Case c = (Case)o;
+		return (c.getLigne()==getLigne() && c.getColonne()==getColonne());
+	}
 
 	@Override
 	public String toString(){
