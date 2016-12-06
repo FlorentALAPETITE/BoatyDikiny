@@ -13,6 +13,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Spinner;
 import java.io.File;
 import javafx.scene.layout.GridPane;
@@ -37,9 +38,12 @@ public class Graphisme extends Application {
 	private Button bComposante;
 
 	private Button bExisteChemin;
-	private Label existeCheminLabel;
+	private TextField existeCheminLabel;
 
 	private Button bPlusCourtChemin;
+
+	private Button bNombreEtoiles;
+	private TextField nombreEtoilesLabel;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -171,6 +175,9 @@ public class Graphisme extends Application {
 	  				gc.strokeLine(tailleCase_/4-tailleCase_/10,tailleCase_/2,(tailleCase_)-tailleCase_/4+tailleCase_/10,tailleCase_/2);
 	  				canvas.setTranslateX(-((h_/2)-i*(tailleCase_+1))+tailleCase_/2-150);
    					canvas.setTranslateY(-((w_/2)-j*(tailleCase_+1))+tailleCase_/2);
+
+   					canvas.setOnMouseClicked(new RectangleClickHandler(d_,d_.getCase(i,j),this));
+
 	  				canvasList.add(canvas);
 	  			}
 
@@ -246,8 +253,9 @@ public class Graphisme extends Application {
         bExisteChemin.setPrefSize(150,45);
         buttonPane.getChildren().add(bExisteChemin);	
 
-        existeCheminLabel = new Label("");
-        existeCheminLabel.setTranslateX(220);
+        existeCheminLabel = new TextField("");
+        existeCheminLabel.setEditable(false);
+        existeCheminLabel.setTranslateX(210);
         existeCheminLabel.setTranslateY(160);
         existeCheminLabel.setPrefSize(50,45);
 		buttonPane.getChildren().add(existeCheminLabel);	
@@ -280,6 +288,37 @@ public class Graphisme extends Application {
         buttonPane.getChildren().add(bPlusCourtChemin);	
 
 
+        bNombreEtoiles = new Button();
+        bNombreEtoiles.setText("nombreEtoiles");
+        bNombreEtoiles.setStyle("-fx-background-color: #FFFAFA");
+        bNombreEtoiles.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	if(getSelectedButton()!="nombreEtoiles"){
+            		cleanSelected();
+            		resetButtonColor();
+                	setSelectedButton("nombreEtoiles");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+            	}
+            	else{
+            		cleanSelected();
+            		setSelectedButton("");
+            		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+            	}
+              
+            }
+        });       
+        bNombreEtoiles.setTranslateX(35);
+        bNombreEtoiles.setTranslateY(300);
+        bNombreEtoiles.setPrefSize(150,45);
+        buttonPane.getChildren().add(bNombreEtoiles);	
+
+        nombreEtoilesLabel = new TextField("");
+        nombreEtoilesLabel.setEditable(false);
+        nombreEtoilesLabel.setTranslateX(210);
+        nombreEtoilesLabel.setTranslateY(300);
+        nombreEtoilesLabel.setPrefSize(50,45);
+		buttonPane.getChildren().add(nombreEtoilesLabel);
 		
 		root.getChildren().add(testingMenu);
 		root.getChildren().add(buttonPane);
@@ -294,6 +333,7 @@ public class Graphisme extends Application {
 		bExisteChemin.setStyle("-fx-background-color: #FFFAFA");
 		bComposante.setStyle("-fx-background-color: #FFFAFA");
 		bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
+		bNombreEtoiles.setStyle("-fx-background-color: #FFFAFA");
 	}
 
 
@@ -319,6 +359,10 @@ public class Graphisme extends Application {
 
 	public void changeExisteCheminLabel(String msg){
 		existeCheminLabel.setText(msg);
+	}
+
+	public void changeNombreEtoilesLabel(String msg){
+		nombreEtoilesLabel.setText(msg);
 	}
 
 

@@ -116,8 +116,11 @@ class MoteurDonnees {
 	}
 
 	//5 : Affiche nombre de cases étoiles dans c :
-	public void nombreEtoiles(Case c){
-		System.out.println("Cases étoiles : "+c.getClasseUnion().classe().getNbObjectif());
+	public int nombreEtoiles(Case c){
+		if(c.getCouleur()!=Color.WHITE)
+			return c.getClasseUnion().classe().getNbObjectif();
+		else
+			return 0;
 	}
 
 	//6 : Affiche score

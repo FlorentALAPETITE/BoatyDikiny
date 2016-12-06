@@ -218,6 +218,16 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 					break;
 
+				case "nombreEtoiles":
+
+					graphisme_.changeNombreEtoilesLabel(moteurD_.nombreEtoiles(c_)+"");					
+
+			
+					graphisme_.resetButtonColor();
+					graphisme_.setSelectedButton("");			
+					break;
+
+
 			
 		}
 		
