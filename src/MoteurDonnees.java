@@ -309,6 +309,10 @@ class MoteurDonnees {
 		}
 
 		int targetIndex = closedList.indexOf(target);
+
+		if(targetIndex == -1)
+			return new ArrayList<Case>();
+		
 		target = closedList.get(targetIndex);
 
 		ArrayList<Case> res = new ArrayList<Case>();
