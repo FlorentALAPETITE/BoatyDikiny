@@ -61,11 +61,13 @@ public class Graphisme extends Application {
 		
  		Pane root = new Pane();
 
-	    spinnerColonne = new Spinner<Integer>(5, 15, 9);
+	    spinnerColonne = new Spinner<Integer>(5, 100, 9);
+	    spinnerColonne.setEditable(true);
 	    spinnerColonne.setLayoutX(200);
 	    spinnerColonne.setLayoutY(175);
 
-		spinnerLigne = new Spinner<Integer>(5, 15, 9);
+		spinnerLigne = new Spinner<Integer>(5, 100, 9);
+		spinnerLigne.setEditable(true);
 		spinnerLigne.setLayoutX(200);
 	    spinnerLigne.setLayoutY(225);
 
@@ -334,7 +336,7 @@ public class Graphisme extends Application {
         score.setTranslateY(520);               
 		buttonPane.getChildren().add(score);	
 
-		scoreR = new Label("0");
+		scoreR = new Label("");
 		scoreR.setFont(new Font("Verdana", 35));
 		scoreR.setTranslateX(100);
         scoreR.setTranslateY(570);   
@@ -347,7 +349,7 @@ public class Graphisme extends Application {
         separator.setTranslateY(570);
 		buttonPane.getChildren().add(separator);
 
-		scoreB = new Label("1");
+		scoreB = new Label("");
 		scoreB.setFont(new Font("Verdana", 35));
 		scoreB.setTranslateX(180);
         scoreB.setTranslateY(570);  
@@ -355,6 +357,7 @@ public class Graphisme extends Application {
 		buttonPane.getChildren().add(scoreB);		
 
 		
+		afficheScores();
 
 		Label tourDeJeu = new Label("Tour : ");
 		tourDeJeu.setFont(new Font("Verdana", 35));
@@ -437,8 +440,13 @@ public class Graphisme extends Application {
 		RectangleClickHandler.resetSelected();
 	}
 
+	//6 : Affiche score
+	public void afficheScores(){
+		scoreB.setText(d_.getScoreB()+"");
+		scoreR.setText(d_.getScoreR()+"");
+	}
 
-
+	
 	public void colorerRectangleTourJeu(){
 		if(d_.getTour())
 			rectTourJeu.setFill(Color.RED);

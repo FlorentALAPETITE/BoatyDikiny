@@ -124,11 +124,14 @@ class MoteurDonnees {
 			return 0;
 	}
 
-	//6 : Affiche score
-	public void afficheScores(){
-		System.out.println("Score rouge : "+scoreR_+", score bleu : "+scoreB_);
+	public int getScoreR(){
+		return scoreR_;
 	}
 
+	public int getScoreB(){
+		return scoreB_;
+	}
+	
 	public Case[][] getCases(){
 		return matriceCase_;
 	}
@@ -179,8 +182,7 @@ class MoteurDonnees {
 					break;
 				}
 			}
-		}
-		afficheScores();
+		}		
 	}
 
 	public ArrayList<Case> getVoisins(Case c){

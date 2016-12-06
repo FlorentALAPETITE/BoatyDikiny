@@ -73,7 +73,9 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					
 					ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
 
-					moteurD_.changeTour();			
+					moteurD_.changeTour();
+					graphisme_.afficheScores();
+					graphisme_.colorerRectangleTourJeu();			
 				}
 				break;
 
