@@ -17,6 +17,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Spinner;
 import java.io.File;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
+
 
 
 public class Graphisme extends Application {
@@ -35,6 +37,8 @@ public class Graphisme extends Application {
 
 	private String selectedButton;
 
+	private Rectangle rectTourJeu;
+
 	private Button bComposante;
 
 	private Button bExisteChemin;
@@ -45,6 +49,9 @@ public class Graphisme extends Application {
 	private Button bNombreEtoiles;
 	private TextField nombreEtoilesLabel;
 
+	private Label scoreR;
+	private Label scoreB;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -204,7 +211,7 @@ public class Graphisme extends Application {
 
 		bComposante = new Button();
         bComposante.setText("afficheComposante");
-        bComposante.setStyle("-fx-background-color: #FFFAFA");
+        bComposante.setStyle("-fx-background-color: #FFFAFA;");
         bComposante.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -309,17 +316,64 @@ public class Graphisme extends Application {
             }
         });       
         bNombreEtoiles.setTranslateX(35);
-        bNombreEtoiles.setTranslateY(300);
+        bNombreEtoiles.setTranslateY(320);
         bNombreEtoiles.setPrefSize(150,45);
         buttonPane.getChildren().add(bNombreEtoiles);	
 
         nombreEtoilesLabel = new TextField("");
         nombreEtoilesLabel.setEditable(false);
         nombreEtoilesLabel.setTranslateX(210);
-        nombreEtoilesLabel.setTranslateY(300);
+        nombreEtoilesLabel.setTranslateY(320);
         nombreEtoilesLabel.setPrefSize(50,45);
 		buttonPane.getChildren().add(nombreEtoilesLabel);
+			
+
+		Label score = new Label("Score");
+		score.setFont(new Font("Verdana", 35));
+		score.setTranslateX(100);
+        score.setTranslateY(520);               
+		buttonPane.getChildren().add(score);	
+
+		scoreR = new Label("0");
+		scoreR.setFont(new Font("Verdana", 35));
+		scoreR.setTranslateX(100);
+        scoreR.setTranslateY(570);   
+        scoreR.setTextFill(Color.RED);    
+		buttonPane.getChildren().add(scoreR);
+
+		Label separator = new Label("-");
+		separator.setFont(new Font("Verdana", 35));
+		separator.setTranslateX(140);
+        separator.setTranslateY(570);
+		buttonPane.getChildren().add(separator);
+
+		scoreB = new Label("1");
+		scoreB.setFont(new Font("Verdana", 35));
+		scoreB.setTranslateX(180);
+        scoreB.setTranslateY(570);  
+        scoreB.setTextFill(Color.BLUE);    
+		buttonPane.getChildren().add(scoreB);		
+
 		
+
+		Label tourDeJeu = new Label("Tour : ");
+		tourDeJeu.setFont(new Font("Verdana", 35));
+		tourDeJeu.setTranslateX(50);
+        tourDeJeu.setTranslateY(690);               
+		buttonPane.getChildren().add(tourDeJeu);		
+
+
+		rectTourJeu = new Rectangle();
+		rectTourJeu.setX(180);
+		rectTourJeu.setY(680);
+		rectTourJeu.setWidth(80);
+		rectTourJeu.setHeight(80);
+		colorerRectangleTourJeu();
+
+		buttonPane.getChildren().add(rectTourJeu);	
+	
+
+
 		root.getChildren().add(testingMenu);
 		root.getChildren().add(buttonPane);
 		
@@ -381,5 +435,14 @@ public class Graphisme extends Application {
 			getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.WHITE);
 		}
 		RectangleClickHandler.resetSelected();
+	}
+
+
+
+	public void colorerRectangleTourJeu(){
+		if(d_.getTour())
+			rectTourJeu.setFill(Color.RED);
+		else
+			rectTourJeu.setFill(Color.BLUE);
 	}
 }
