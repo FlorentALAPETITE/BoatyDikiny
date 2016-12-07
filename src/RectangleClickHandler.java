@@ -167,14 +167,14 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					if(selected1==null && selected2==null){
 						selected1 = c_;
 						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStrokeWidth(6);
-						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.CHARTREUSE);
+						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.VIOLET);
 
 					}
 					else{
 						if(selected1!=null && selected2==null){
 							selected2 = c_;
 							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStrokeWidth(6);
-							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.CHARTREUSE);
+							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.VIOLET);
 
 							final ArrayList<Case> casesMin = moteurD_.relierCasesMin(selected1,selected2);
 
@@ -222,10 +222,36 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 					graphisme_.changeNombreEtoilesLabel(moteurD_.nombreEtoiles(c_)+"");					
 
-			
-					graphisme_.resetButtonColor();
+					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStrokeWidth(6);
+					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStroke(Color.ORANGE);
+					
+					Thread t2 = new Thread(){
+
+						public void run(){
+							try{
+								sleep(3000);																
+												
+								graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStroke(Color.WHITE);
+					
+								
+							} catch(Exception e){
+								e.printStackTrace();
+							}
+
+						}
+					};
+
+					t2.start();
+
+					graphisme_.resetButtonColor();	
 					graphisme_.setSelectedButton("");			
 					break;
+
+
+				case "relieComposantes":
+
+					//relieComposantes
 
 
 			
@@ -237,7 +263,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			
 	}
 
-	// 7
+	// 7 relieComposantes
 	public boolean relieComposantes(){
 		boolean res = false;
 		int i =0;

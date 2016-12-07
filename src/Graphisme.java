@@ -93,8 +93,8 @@ public class Graphisme extends Application {
 
 
 	    Label labelNom = new Label("Boaty Dikiny");
-	    labelNom.setFont(new Font("Verdana", 35));
-	   	labelNom.setLayoutX(50);
+	    labelNom.setFont(new Font("Verdana", 45));
+	   	labelNom.setLayoutX(60);
 	    labelNom.setLayoutY(40);
 
 
