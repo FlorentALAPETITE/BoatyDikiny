@@ -91,7 +91,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 					public void run(){
 						try{
-							sleep(3500);
+							sleep(3600);
 							for(ClasseUnion cu : composantes){								
 								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(0);
 								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.WHITE);
@@ -136,11 +136,11 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 							graphisme_.changeExisteCheminLabel("NON");
 
 
-						Thread t2 = new Thread(){
+						Thread t1 = new Thread(){
 
 						public void run(){
 							try{
-								sleep(3500);																
+								sleep(3600);																
 								graphisme_.cleanSelected();								
 								
 								
@@ -151,7 +151,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 						}
 					};
 
-					t2.start();
+					t1.start();
 					graphisme_.resetButtonColor();
 					
 					graphisme_.setSelectedButton("");	
@@ -167,31 +167,31 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					if(selected1==null && selected2==null){
 						selected1 = c_;
 						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStrokeWidth(6);
-						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.VIOLET);
+						graphisme_.getRectangle(selected1.getLigne(),selected1.getColonne()).setStroke(Color.FUCHSIA);
 
 					}
 					else{
 						if(selected1!=null && selected2==null){
 							selected2 = c_;
 							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStrokeWidth(6);
-							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.VIOLET);
+							graphisme_.getRectangle(selected2.getLigne(),selected2.getColonne()).setStroke(Color.FUCHSIA);
 
 							final ArrayList<Case> casesMin = moteurD_.relierCasesMin(selected1,selected2);
 
 							
 							if(casesMin!=null){
 								for(Case cMin : casesMin){						
-									graphisme_.getRectangle(cMin.getLigne(),cMin.getColonne()).setFill(Color.TAN);	
+									graphisme_.getRectangle(cMin.getLigne(),cMin.getColonne()).setFill(Color.LIGHTPINK);	
 													
 								}
 							}
 
 
-							Thread t3 = new Thread(){
+							Thread t2 = new Thread(){
 
 							public void run(){
 								try{
-									sleep(3500);																
+									sleep(3600);																
 									graphisme_.cleanSelected();		
 									if(casesMin!=null){
 										for(Case cMin : casesMin){						
@@ -208,7 +208,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 							}
 						};
 
-						t3.start();
+						t2.start();
 						graphisme_.resetButtonColor();
 						
 						graphisme_.setSelectedButton("");	
@@ -225,7 +225,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStrokeWidth(6);
 					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStroke(Color.ORANGE);
 					
-					Thread t2 = new Thread(){
+					Thread t3 = new Thread(){
 
 						public void run(){
 							try{
@@ -242,7 +242,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 						}
 					};
 
-					t2.start();
+					t3.start();
 
 					graphisme_.resetButtonColor();	
 					graphisme_.setSelectedButton("");			
@@ -250,8 +250,39 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 
 				case "relieComposantes":
+					
+					boolean relieC = relieComposantes();
 
-					//relieComposantes
+					if(relieC)
+						graphisme_.changeRelieComposantesLabel("OUI");
+					else
+						graphisme_.changeRelieComposantesLabel("NON");							
+
+					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStrokeWidth(6);
+					graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStroke(Color.CYAN);
+					
+					Thread t4 = new Thread(){
+
+						public void run(){
+							try{
+								sleep(3000);																
+												
+								graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setStroke(Color.WHITE);
+					
+								
+							} catch(Exception e){
+								e.printStackTrace();
+							}
+
+						}
+					};
+
+					t4.start();
+
+					graphisme_.resetButtonColor();	
+					graphisme_.setSelectedButton("");	
+					break;
 
 
 			
@@ -268,15 +299,40 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 		boolean res = false;
 		int i =0;
 		ClasseUnion c1,c2;
+
+		Color couleur = c_.getCouleur();
+
+		if(couleur==Color.WHITE){
+			if (moteurD_.getTour())
+				couleur = Color.RED;
+			else
+				couleur = Color.BLUE;
+		}
+
 		while(i<voisins_.size() && !res){
-			if(c_.getCouleur() == voisins_.get(i).getCouleur()){
-				c1 = c_.getClasseUnion().classe();
-				c2 = voisins_.get(i).getClasseUnion().classe();
-				if(c1!=c2)
-					res=true;
+			if(couleur == voisins_.get(i).getCouleur()){
+				res=true;
 			}
 			++i;
 		}
+			
+		
+		// A verifier (marche pas pour test des cases blanches)
+
+
+		// 	while(i<voisins_.size() && !res){
+		// 		if(c_.getCouleur() == voisins_.get(i).getCouleur()){
+		// 			c1 = c_.getClasseUnion().classe();
+		// 			c2 = voisins_.get(i).getClasseUnion().classe();
+		// 			if(c1!=c2)
+		// 				res=true;
+		// 		}
+		// 		++i;
+		// 	}
+		// 	return res;
+		// }
+
+
 		return res;
 	}
 

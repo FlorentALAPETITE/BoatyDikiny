@@ -53,8 +53,12 @@ public class Graphisme extends Application {
 	private Button bNombreEtoiles;
 	private TextField nombreEtoilesLabel;
 
+	private Button bRelieComposantes;
+	private TextField labelRelieComposantes;
+
 	private Label scoreR;
 	private Label scoreB;
+	
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -98,11 +102,17 @@ public class Graphisme extends Application {
 	    labelNom.setLayoutY(40);
 
 
-	    Button btn = new Button();
-        btn.setText("Lancer partie");
-        btn.setOnAction(new LaunchButtonHandler(this, primaryStage));
-        btn.setLayoutX(150);
-        btn.setLayoutY(330);
+	    Button btnH = new Button();
+        btnH.setText("Humain vs Humain");
+        btnH.setOnAction(new LaunchButtonHandler(this, primaryStage));
+        btnH.setLayoutX(45);
+        btnH.setLayoutY(330);
+
+        Button btnIA = new Button();
+        btnIA.setText("Humain vs IA");
+        btnIA.setOnAction(new LaunchButtonHandler(this, primaryStage));
+        btnIA.setLayoutX(230);
+        btnIA.setLayoutY(330);
 
 	    Scene scene = new Scene(root, 400, 400,Color.BLACK);
 	    
@@ -113,7 +123,8 @@ public class Graphisme extends Application {
 	    root.getChildren().add(spinnerColonne);
 	    root.getChildren().add(spinnerLigne);
 	    root.getChildren().add(spinnerObjectif);
-	  	root.getChildren().add(btn);
+	  	root.getChildren().add(btnH);
+	  	root.getChildren().add(btnIA);
 	  	root.getChildren().add(labelNom);
 
 	  	primaryStage.setResizable(false);
@@ -228,11 +239,14 @@ public class Graphisme extends Application {
         bComposante.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	changeRelieComposantesLabel("");
+            	changeExisteCheminLabel("");
+            	changeNombreEtoilesLabel("");
             	if(getSelectedButton()!="afficheComposante"){
             		cleanSelected();
             		resetButtonColor();
                 	setSelectedButton("afficheComposante");
-                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #FFFFA0");
             	}
             	else{
             		cleanSelected();
@@ -254,13 +268,16 @@ public class Graphisme extends Application {
         bExisteChemin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	changeRelieComposantesLabel("");
+            	changeNombreEtoilesLabel("");
             	if(getSelectedButton()!="existeCheminCases"){
             		cleanSelected();
             		resetButtonColor();            		
                 	setSelectedButton("existeCheminCases");
-                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #7FFF00");
             	}
             	else{
+            		changeExisteCheminLabel("");
             		setSelectedButton("");
             		cleanSelected();
             		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
@@ -288,11 +305,14 @@ public class Graphisme extends Application {
         bPlusCourtChemin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	changeRelieComposantesLabel("");
+            	changeNombreEtoilesLabel("");
+            	changeExisteCheminLabel("");
             	if(getSelectedButton()!="relierCasesMin"){
             		cleanSelected();
             		resetButtonColor();
                 	setSelectedButton("relierCasesMin");
-                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+                	((Button)event.getSource()).setStyle("-fx-background-color:  #FF00FF");
             	}
             	else{
             		cleanSelected();
@@ -314,13 +334,16 @@ public class Graphisme extends Application {
         bNombreEtoiles.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+            	changeRelieComposantesLabel("");
+            	changeExisteCheminLabel("");
             	if(getSelectedButton()!="nombreEtoiles"){
             		cleanSelected();
             		resetButtonColor();
                 	setSelectedButton("nombreEtoiles");
-                	((Button)event.getSource()).setStyle("-fx-background-color: #BCF5A9");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #FFA500");
             	}
             	else{
+            		changeNombreEtoilesLabel("");
             		cleanSelected();
             		setSelectedButton("");
             		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
@@ -333,6 +356,7 @@ public class Graphisme extends Application {
         bNombreEtoiles.setPrefSize(150,45);
         buttonPane.getChildren().add(bNombreEtoiles);	
 
+
         nombreEtoilesLabel = new TextField("");
         nombreEtoilesLabel.setEditable(false);
         nombreEtoilesLabel.setTranslateX(210);
@@ -340,6 +364,43 @@ public class Graphisme extends Application {
         nombreEtoilesLabel.setPrefSize(50,45);
 		buttonPane.getChildren().add(nombreEtoilesLabel);
 			
+
+        bRelieComposantes = new Button();
+        bRelieComposantes.setText("relieComposantes");
+        bRelieComposantes.setStyle("-fx-background-color: #FFFAFA");
+        bRelieComposantes.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	changeNombreEtoilesLabel("");
+            	changeExisteCheminLabel("");
+            	if(getSelectedButton()!="relieComposantes"){            		
+            		cleanSelected();
+            		resetButtonColor();
+                	setSelectedButton("relieComposantes");
+                	((Button)event.getSource()).setStyle("-fx-background-color: #00ffff");
+            	}
+            	else{
+            		cleanSelected();
+            		changeRelieComposantesLabel("");
+            		setSelectedButton("");
+            		((Button)event.getSource()).setStyle("-fx-background-color: #FFFAFA");
+            	}
+              
+            }
+        });       
+        bRelieComposantes.setTranslateX(35);
+        bRelieComposantes.setTranslateY(400);
+        bRelieComposantes.setPrefSize(150,45);
+        buttonPane.getChildren().add(bRelieComposantes);
+
+
+        labelRelieComposantes = new TextField("");
+        labelRelieComposantes.setEditable(false);
+        labelRelieComposantes.setTranslateX(210);
+        labelRelieComposantes.setTranslateY(400);
+        labelRelieComposantes.setPrefSize(50,45);
+		buttonPane.getChildren().add(labelRelieComposantes);
+
 
 		Label score = new Label("Score");
 		score.setFont(new Font("Verdana", 35));
@@ -395,6 +456,11 @@ public class Graphisme extends Application {
 		vJoueur.setTranslateX(-150);
         vJoueur.setTranslateY(50);
 
+        Label menuLabel = new Label("Menu de jeu");
+		menuLabel.setFont(new Font("Verdana", 30));	
+		menuLabel.setTranslateX(60);
+        menuLabel.setTranslateY(20);
+      	buttonPane.getChildren().add(menuLabel);	
 
 		root.getChildren().add(testingMenu);
 		root.getChildren().add(buttonPane);
@@ -416,6 +482,7 @@ public class Graphisme extends Application {
 		bComposante.setStyle("-fx-background-color: #FFFAFA");
 		bPlusCourtChemin.setStyle("-fx-background-color: #FFFAFA");
 		bNombreEtoiles.setStyle("-fx-background-color: #FFFAFA");
+		bRelieComposantes.setStyle("-fx-background-color: #FFFAFA");
 	}
 
 
@@ -445,6 +512,10 @@ public class Graphisme extends Application {
 
 	public void changeNombreEtoilesLabel(String msg){
 		nombreEtoilesLabel.setText(msg);
+	}
+
+	public void changeRelieComposantesLabel(String msg){
+		labelRelieComposantes.setText(msg);
 	}
 
 
@@ -508,5 +579,9 @@ public class Graphisme extends Application {
 			rectTourJeu.setFill(Color.RED);
 		else
 			rectTourJeu.setFill(Color.BLUE);
+	}
+
+	public void setTypeJeu(String typeJ){
+		d_.setTypeJeu(typeJ);
 	}
 }

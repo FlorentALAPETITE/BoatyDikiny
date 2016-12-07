@@ -17,6 +17,8 @@ class MoteurDonnees {
 
 	private String victoire;
 
+	private String typeJeu;
+
 	private HashSet<ClasseUnion> unionFindSetRed_;
 	private HashSet<ClasseUnion> unionFindSetBlue_;
 
@@ -173,6 +175,11 @@ class MoteurDonnees {
 			return 0;
 	}
 
+
+	public void setTypeJeu(String typeJ){
+		typeJeu = typeJ;
+	}
+
 	public int getScoreR(){
 		return scoreR_;
 	}
@@ -197,13 +204,23 @@ class MoteurDonnees {
 		return colonnes_;
 	}
 
-	public boolean getTour(){
+	public boolean getTour(){		
 		return tour_;
 	}
 
 	public void changeTour(){
 		tour_=!tour_;
 		testVictoire();
+
+
+		if(typeJeu == "ia"){
+
+			// FAIRE IA ICI
+
+
+		}
+
+
 	}
 
 	public String getVictoire(){
