@@ -18,6 +18,7 @@ import javafx.scene.control.Spinner;
 import java.io.File;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import javafx.geometry.Insets;
 
 
 
@@ -43,6 +44,9 @@ public class Graphisme extends Application {
 
 	private Button bExisteChemin;
 	private TextField existeCheminLabel;
+
+	private Label victoire;
+	private Label vJoueur;
 
 	private Button bPlusCourtChemin;
 
@@ -88,6 +92,12 @@ public class Graphisme extends Application {
 	    nbObj.setLayoutY(280);
 
 
+	    Label labelNom = new Label("Boaty Dikiny");
+	    labelNom.setFont(new Font("Verdana", 35));
+	   	labelNom.setLayoutX(50);
+	    labelNom.setLayoutY(40);
+
+
 	    Button btn = new Button();
         btn.setText("Lancer partie");
         btn.setOnAction(new LaunchButtonHandler(this, primaryStage));
@@ -104,6 +114,7 @@ public class Graphisme extends Application {
 	    root.getChildren().add(spinnerLigne);
 	    root.getChildren().add(spinnerObjectif);
 	  	root.getChildren().add(btn);
+	  	root.getChildren().add(labelNom);
 
 	  	primaryStage.setResizable(false);
 		primaryStage.setTitle("Improved-Potatoe");
@@ -357,8 +368,6 @@ public class Graphisme extends Application {
 		buttonPane.getChildren().add(scoreB);		
 
 		
-		afficheScores();
-
 		Label tourDeJeu = new Label("Tour : ");
 		tourDeJeu.setFont(new Font("Verdana", 35));
 		tourDeJeu.setTranslateX(50);
@@ -374,15 +383,31 @@ public class Graphisme extends Application {
 		colorerRectangleTourJeu();
 
 		buttonPane.getChildren().add(rectTourJeu);	
-	
+		
+
+		victoire = new Label();
+		victoire.setFont(new Font("Verdana", 130));	
+		victoire.setTranslateX(-150);
+        victoire.setTranslateY(-150);
+
+        vJoueur = new Label();
+		vJoueur.setFont(new Font("Verdana", 130));	
+		vJoueur.setTranslateX(-150);
+        vJoueur.setTranslateY(50);
 
 
 		root.getChildren().add(testingMenu);
 		root.getChildren().add(buttonPane);
+
+		root.getChildren().add(victoire);
+		root.getChildren().add(vJoueur);
 		
 	
 		primaryStage.setScene(scene);
 		primaryStage.show();
+
+		afficheScores();
+
 	
 	}
 
@@ -442,8 +467,39 @@ public class Graphisme extends Application {
 
 	//6 : Affiche score
 	public void afficheScores(){
-		scoreB.setText(d_.getScoreB()+"");
+		scoreB.setText(d_.getScoreB()+"");		
 		scoreR.setText(d_.getScoreR()+"");
+
+		if(d_.getVictoire()=="rouge"){
+			victoire.setText("Victoire");
+			vJoueur.setText("ROUGE");
+			victoire.setTextFill(Color.RED);
+			vJoueur.setTextFill(Color.RED);
+			victoire.setBorder(new Border(new BorderStroke(Color.BLACK, 
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+			vJoueur.setBorder(new Border(new BorderStroke(Color.BLACK, 
+            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+            vJoueur.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+            victoire.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+		}
+		else{
+			if(d_.getVictoire()=="bleu"){
+				victoire.setText("Victoire");
+				vJoueur.setText("BLEU");
+				victoire.setTextFill(Color.BLUE);
+				vJoueur.setTextFill(Color.BLUE);
+
+				victoire.setBorder(new Border(new BorderStroke(Color.BLACK, 
+	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+				vJoueur.setBorder(new Border(new BorderStroke(Color.BLACK, 
+	            BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
+
+	            vJoueur.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+	            victoire.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+
+			}
+		}
 	}
 
 	

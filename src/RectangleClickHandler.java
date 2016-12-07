@@ -29,10 +29,14 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 		c_=c;
 		voisins_ = moteurD_.getVoisins(c_);
 		graphisme_ = g;
+
+				
 	}
 
 	
 	public void handle(MouseEvent event){
+
+		if(moteurD_.getVictoire()==""){
 
 		switch (graphisme_.getSelectedButton()) {
 			case "":
@@ -50,8 +54,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 					boolean seul = true;
 
-					System.out.println(relieComposantes());
-
+					
 					for(Case c : voisins_){
 						if(c_.getCouleur() == c.getCouleur()){
 							seul = false;
@@ -67,12 +70,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 							moteurD_.ajouterClasseUnion(c_.getClasseUnion());
 						}
 					}
-
 					
-					moteurD_.nombreEtoiles(c_);						
-					
-					ArrayList<Case> plusCourtCommeTaBite = moteurD_.plusCourtChemin(c_,moteurD_.getCase(0,0));
-
 					moteurD_.changeTour();
 					graphisme_.afficheScores();
 					graphisme_.colorerRectangleTourJeu();			
@@ -184,7 +182,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 							if(casesMin!=null){
 								for(Case cMin : casesMin){						
 									graphisme_.getRectangle(cMin.getLigne(),cMin.getColonne()).setFill(Color.TAN);	
-									System.out.println(cMin);								
+													
 								}
 							}
 
@@ -232,6 +230,8 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 			
 		}
+
+	}
 		
 
 			

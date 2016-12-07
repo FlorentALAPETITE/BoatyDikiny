@@ -15,10 +15,14 @@ class MoteurDonnees {
 	private int scoreR_;
 	private int scoreB_;
 
+	private String victoire;
+
 	private HashSet<ClasseUnion> unionFindSetRed_;
 	private HashSet<ClasseUnion> unionFindSetBlue_;
 
 	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
+
+		victoire ="";
 
 		matriceCase_ = new Case [colonnes][lignes];
 		nbCasesObjectif_ = nbCasesObjectif;
@@ -45,7 +49,14 @@ class MoteurDonnees {
 		unionFindSetRed_ = new HashSet<ClasseUnion>();
 		unionFindSetBlue_ = new HashSet<ClasseUnion>();
 
+		ClasseUnion c1,c2;
+
+		boolean seul;
+		ArrayList<Case> voisins_;
+		Case c_;
+
 		while(casesObjectifJ1>0){
+			seul=true;
 			trouveCaseVide = false;
 
 			while(!trouveCaseVide){
@@ -57,11 +68,31 @@ class MoteurDonnees {
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.RED);
 			unionFindSetRed_.add(matriceCase_[randX][randY].getClasseUnion());
-			casesObjectifJ1-=1;			
+			casesObjectifJ1-=1;	
+
+			c_ = getCase(randX,randY);
+			voisins_ = getVoisins(c_);
+
+			for(Case c : voisins_){
+				if(c_.getCouleur() == c.getCouleur()){
+					seul = false;
+					c1 = c_.getClasseUnion().classe();
+					c2 = c.getClasseUnion().classe();
+					if(c1!=c2){
+						c1.union(c2);
+						unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+					}
+
+				}
+				if(seul){
+					ajouterClasseUnion(c_.getClasseUnion());
+				}
+			}		
 		}
 
 
 		while(casesObjectifJ2>0){
+			seul=true;
 			trouveCaseVide = false;
 
 			while(!trouveCaseVide){
@@ -73,13 +104,31 @@ class MoteurDonnees {
 
 			matriceCase_[randX][randY].setCaseObjectif(Color.BLUE);
 			unionFindSetBlue_.add(matriceCase_[randX][randY].getClasseUnion());
-			casesObjectifJ2-=1;			
+			casesObjectifJ2-=1;		
+
+			c_ = getCase(randX,randY);
+			voisins_ = getVoisins(c_);
+
+			for(Case c : voisins_){
+				if(c_.getCouleur() == c.getCouleur()){
+					seul = false;
+					c1 = c_.getClasseUnion().classe();
+					c2 = c.getClasseUnion().classe();
+					if(c1!=c2){
+						c1.union(c2);
+						unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+					}
+
+				}
+				if(seul){
+					ajouterClasseUnion(c_.getClasseUnion());
+				}
+			}			
 		}
 
 		tour_=true; // bleu
 
-		scoreR_ = 0;
-		scoreB_ = 0;
+		testVictoire();
 
 
 	}
@@ -157,28 +206,30 @@ class MoteurDonnees {
 		testVictoire();
 	}
 
+	public String getVictoire(){
+		return victoire;
+	}
+
 	public void testVictoire(){
 
-		boolean rWin = false;
 		int nbObjCase;
 		for(ClasseUnion cu : unionFindSetRed_){
 			nbObjCase = cu.getNbObjectif();
 			if(nbObjCase>scoreR_)
 				scoreR_=nbObjCase;
 			if(nbObjCase==nbCasesObjectif_){				
-				rWin = true;
-				System.out.println("OLOLOL ROUGE Y GAGNE");
+				victoire = "rouge";				
 				break;
 			}
 		}
 
-		if(!rWin){
+		if(victoire!="rouge"){
 			for(ClasseUnion cu : unionFindSetBlue_){
 				nbObjCase = cu.getNbObjectif();
 				if(nbObjCase>scoreB_)
 					scoreB_=nbObjCase;
-				if(nbObjCase==nbCasesObjectif_){				
-					System.out.println("OLOLOL BLEU Y GAGNE");
+				if(nbObjCase==nbCasesObjectif_){	
+					victoire="bleu";					
 					break;
 				}
 			}
@@ -235,42 +286,6 @@ class MoteurDonnees {
 		}
 	}
 
-	public int[][] inondation(Case c){
-		int[][] res = new int[colonnes_][lignes_];
-		int step = 1;
-		res[c.getLigne()][c.getColonne()] = step;
-
-		boolean done = false;
-		ArrayList<Case> aModifier = getVoisins(c);
-		ArrayList< ArrayList<Case> > modifies = new ArrayList< ArrayList<Case> >();
-
-		ArrayList<Case> aAjouter;
-		while(!done){
-			++step;
-			aAjouter = new ArrayList<Case>();
-			
-			for(Case voisin : aModifier){
-				if(voisin.getCouleur() == Color.WHITE || voisin.getCouleur() == c.getCouleur()){
-					res[voisin.getLigne()][voisin.getColonne()] = step;
-					aAjouter.add(voisin);
-				}
-			}
-			modifies.add(aAjouter);
-
-			aModifier = new ArrayList<Case>();
-			for(Case caca : modifies.get(modifies.size()-1)){
-				for(Case voisin : getVoisins(caca)){
-					if(res[voisin.getLigne()][voisin.getColonne()] == 0)
-						aModifier.add(voisin);
-				}
-			}
-			if(aModifier.size()==0)
-				done = true;
-		}
-
-		return res;
-	}
-
 	public ArrayList<Case> plusCourtChemin(Case c1, Case c2){
 
 		ArrayList<AEtoile> openList = new ArrayList<AEtoile>();
@@ -303,9 +318,9 @@ class MoteurDonnees {
 						else
 							toAdd = new AEtoile(v, current, current.getG(), heuristique);
 
-						if(!openList.contains(toAdd)){
+						if(!openList.contains(toAdd))
 							openList.add(toAdd);
-						}
+
 						else {
 							int index = openList.indexOf(toAdd);
 							if (current.getG()+10<openList.get(index).getG())
@@ -334,53 +349,6 @@ class MoteurDonnees {
 		}
 
 		return res;
-		/*int [] [] inond = inondation(c1);
-
-		ArrayList<Case> res = new ArrayList<Case>();
-		if(!(c1.getCouleur() == Color.BLUE && c2.getCouleur() == Color.RED) && !(c2.getCouleur() == Color.BLUE && c1.getCouleur() == Color.RED)){
-			res.add(c2);
-			long minValue = 999999999;
-			boolean noPath = false;
-			do{
-				Case currentCase = res.get(res.size()-1);
-				ArrayList<Case> voisins = getVoisins(currentCase);
-				int j = 0;
-				boolean found = false;
-				Case minCase = voisins.get(j);
-				int currentValue;
-
-				while(j<voisins.size() && !found){
-					minCase = voisins.get(j);
-					currentValue = inond[minCase.getColonne()][minCase.getLigne()];
-					if(currentValue > 0){
-						minValue = currentValue;
-						found = true;
-					}else{
-						++j;
-					}
-				}
-
-				noPath = !found;
-				if(found){
-					for(int i=j+1; i<voisins.size(); ++i){
-
-						Case caseVoisine = voisins.get(i);
-						currentValue = inond[caseVoisine.getColonne()][caseVoisine.getLigne()];
-						if(currentValue < minValue && currentValue > 0){
-							minCase = caseVoisine;
-							minValue = currentValue;
-						}
-					}
-
-					res.add(minCase);
-				}
-
-			}while(minValue != 1 && !noPath);
-		}
-		if(res.size()>1)
-			return res;
-		else
-			return new ArrayList<Case>();*/
 	}
 
 	@Override
