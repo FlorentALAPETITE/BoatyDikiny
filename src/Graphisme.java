@@ -128,7 +128,7 @@ public class Graphisme extends Application {
 	  	root.getChildren().add(labelNom);
 
 	  	primaryStage.setResizable(false);
-		primaryStage.setTitle("Improved-Potatoe");
+		primaryStage.setTitle("Boaty Dikiny");
 		primaryStage.setScene(scene);
 		primaryStage.show();
 
