@@ -273,9 +273,7 @@ class MoteurDonnees {
 
 		}
 
-		System.out.println(c_);
-
-
+	
 		if(trouve && c_.getCouleur()==Color.WHITE){
 
 			ArrayList<Case> voisins_ = getVoisins(c_);

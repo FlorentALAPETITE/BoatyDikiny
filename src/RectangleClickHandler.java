@@ -191,7 +191,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 							public void run(){
 								try{
-									sleep(3600);																
+									sleep(2000);																
 									graphisme_.cleanSelected();		
 									if(casesMin!=null){
 										for(Case cMin : casesMin){						
