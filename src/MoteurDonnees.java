@@ -143,69 +143,6 @@ class MoteurDonnees {
 
 	}
 
-	// 1 : Colorie une case de la matrice du jeu en la couleur c
-	public void colorerCase(int colonne, int ligne, Color c){
-		matriceCase_[colonne][ligne].setCouleur(c);		
-	}
-
-	//2 : Affiche composante :
-	public ArrayList<ClasseUnion> afficheComposante(Case c){
-		if(c.getCouleur()!=Color.WHITE)
-			return c.getClasseUnion().classe().parcoursClasseUnion();
-		else
-			return new ArrayList<ClasseUnion>();
-	}
-
-	//3 : Dit s'il existe un chemin entre deux cases :
-	public boolean existeCheminCases(Case c1, Case c2){
-		ArrayList<Case> chemin = plusCourtChemin(c1, c2);
-		return !(chemin.size()==0);
-	}
-
-	//4 : Donne le nombre min de case à colorier pour relier deux cases
-	public ArrayList<Case> relierCasesMin(Case c1, Case c2){
-		ArrayList<Case> chemin = plusCourtChemin(c1,c2);
-		ArrayList<Case> minCaseColorier = new ArrayList<Case>();
-		for(Case c : chemin){
-			if(c.getCouleur() != c1.getCouleur()){
-				minCaseColorier.add(c);				
-			}
-		}
-
-		return minCaseColorier;
-	}
-
-	//5 : Affiche nombre de cases étoiles dans c :
-	public int nombreEtoiles(Case c){
-		if(c.getCouleur()!=Color.WHITE)
-			return c.getClasseUnion().classe().getNbObjectif();
-		else
-			return 0;
-	}
-
-	// 9.1 evaluerCase1()
-	public void evaluerCase1(){
-		centreMasseX = 0;
-		centreMasseY = 0;
-
-		int nbCase = 0;
-
-		for(ClasseUnion cu : unionFindSetBlue_){
-			centreMasseX+=cu.getCase().getLigne();
-			centreMasseY+=cu.getCase().getColonne();
-			++nbCase;
-			for(ClasseUnion cu2 : cu.parcoursClasseUnion()){
-				centreMasseX+=cu.getCase().getLigne();
-				centreMasseY+=cu.getCase().getColonne();
-				++nbCase;
-			}
-		}
-
-		centreMasseX = centreMasseX/nbCase;
-		centreMasseY = centreMasseY/nbCase;
-
-	}
-
 	public void setTypeJeu(String typeJ){
 		typeJeu = typeJ;
 		if(typeJeu == "ia"){
@@ -250,68 +187,6 @@ class MoteurDonnees {
 			joueOrdiHumain();
 		}
 
-	}
-
-
-	public void joueOrdiHumain(){
-
-		Case c_=null;
-		ArrayList<Case> objectif;
-		Case caseCentreMasse = getCase(centreMasseX,centreMasseY);
-
-		boolean trouve = false;
-
-		for(ClasseUnion cu : unionFindSetBlue_){			
-			if(cu.getNbObjectif()>0){
-				objectif = relierCasesMin(cu.getCase(),caseCentreMasse);
-				if(objectif.size()>0){
-					trouve = true;
-					c_ = objectif.get(0);
-					break;
-				}
-			}
-
-		}
-
-	
-		if(trouve && c_.getCouleur()==Color.WHITE){
-
-			ArrayList<Case> voisins_ = getVoisins(c_);
-
-			Color col; 
-			if (getTour())
-				col = Color.RED;
-			else
-				col = Color.BLUE;
-			graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setFill(col);
-						
-			colorerCase(c_.getColonne(),c_.getLigne(),col);
-			
-			ClasseUnion c1,c2;
-
-			boolean seul = true;
-
-			
-			for(Case c : voisins_){
-				if(c_.getCouleur() == c.getCouleur()){
-					seul = false;
-					c1 = c_.getClasseUnion().classe();
-					c2 = c.getClasseUnion().classe();
-					if(c1!=c2){
-						c1.union(c2);
-						unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
-					}
-
-				}
-				if(seul){
-					ajouterClasseUnion(c_.getClasseUnion());
-				}
-			}
-			
-			changeTour();
-			graphisme_.afficheScores();
-			graphisme_.colorerRectangleTourJeu();			
-		}
 	}
 
 	public String getVictoire(){
@@ -470,5 +345,141 @@ class MoteurDonnees {
 		}
 		return res;
 	}			
+
+
+
+
+
+	// METHODES OBLIGATOIRES :
+
+
+	// 1 : Colorie une case de la matrice du jeu en la couleur c
+	public void colorerCase(int colonne, int ligne, Color c){
+		matriceCase_[colonne][ligne].setCouleur(c);		
+	}
+
+	//2 : Affiche composante :
+	public ArrayList<ClasseUnion> afficheComposante(Case c){
+		if(c.getCouleur()!=Color.WHITE)
+			return c.getClasseUnion().classe().parcoursClasseUnion();
+		else
+			return new ArrayList<ClasseUnion>();
+	}
+
+	//3 : Dit s'il existe un chemin entre deux cases :
+	public boolean existeCheminCases(Case c1, Case c2){
+		ArrayList<Case> chemin = plusCourtChemin(c1, c2);
+		return !(chemin.size()==0);
+	}
+
+	//4 : Donne le nombre min de case à colorier pour relier deux cases
+	public ArrayList<Case> relierCasesMin(Case c1, Case c2){
+		ArrayList<Case> chemin = plusCourtChemin(c1,c2);
+		ArrayList<Case> minCaseColorier = new ArrayList<Case>();
+		for(Case c : chemin){
+			if(c.getCouleur() != c1.getCouleur()){
+				minCaseColorier.add(c);				
+			}
+		}
+
+		return minCaseColorier;
+	}
+
+	//5 : Affiche nombre de cases étoiles dans c :
+	public int nombreEtoiles(Case c){
+		if(c.getCouleur()!=Color.WHITE)
+			return c.getClasseUnion().classe().getNbObjectif();
+		else
+			return 0;
+	}
+
+
+	// 9.1 evaluerCase1()
+	public void evaluerCase1(){
+		centreMasseX = 0;
+		centreMasseY = 0;
+
+		int nbCase = 0;
+
+		for(ClasseUnion cu : unionFindSetBlue_){
+			centreMasseX+=cu.getCase().getLigne();
+			centreMasseY+=cu.getCase().getColonne();
+			++nbCase;
+			for(ClasseUnion cu2 : cu.parcoursClasseUnion()){
+				centreMasseX+=cu.getCase().getLigne();
+				centreMasseY+=cu.getCase().getColonne();
+				++nbCase;
+			}
+		}
+
+		centreMasseX = centreMasseX/nbCase;
+		centreMasseY = centreMasseY/nbCase;
+
+	}
+
+
+	// 10. joueOrdiHumain
+	public void joueOrdiHumain(){
+
+		Case c_=null;
+		ArrayList<Case> objectif;
+		Case caseCentreMasse = getCase(centreMasseX,centreMasseY);
+
+		boolean trouve = false;
+
+		for(ClasseUnion cu : unionFindSetBlue_){			
+			if(cu.getNbObjectif()>0){
+				objectif = relierCasesMin(cu.getCase(),caseCentreMasse);
+				if(objectif.size()>0){
+					trouve = true;
+					c_ = objectif.get(0);
+					break;
+				}
+			}
+
+		}
+
+	
+		if(trouve && c_.getCouleur()==Color.WHITE){
+
+			ArrayList<Case> voisins_ = getVoisins(c_);
+
+			Color col; 
+			if (getTour())
+				col = Color.RED;
+			else
+				col = Color.BLUE;
+			graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setFill(col);
+						
+			colorerCase(c_.getColonne(),c_.getLigne(),col);
+			
+			ClasseUnion c1,c2;
+
+			boolean seul = true;
+
+			
+			for(Case c : voisins_){
+				if(c_.getCouleur() == c.getCouleur()){
+					seul = false;
+					c1 = c_.getClasseUnion().classe();
+					c2 = c.getClasseUnion().classe();
+					if(c1!=c2){
+						c1.union(c2);
+						unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+					}
+
+				}
+				if(seul){
+					ajouterClasseUnion(c_.getClasseUnion());
+				}
+			}
+			
+			changeTour();
+			graphisme_.afficheScores();
+			graphisme_.colorerRectangleTourJeu();			
+		}
+	}
+
+
 
 }

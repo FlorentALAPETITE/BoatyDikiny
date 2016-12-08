@@ -536,6 +536,23 @@ public class Graphisme extends Application {
 		RectangleClickHandler.resetSelected();
 	}
 
+	
+	
+	public void colorerRectangleTourJeu(){
+		if(d_.getTour())
+			rectTourJeu.setFill(Color.RED);
+		else
+			rectTourJeu.setFill(Color.BLUE);
+	}
+
+	public void setTypeJeu(String typeJ){
+		d_.setTypeJeu(typeJ);
+	}
+
+
+
+	// METHODES OBLIGATOIRES :
+
 	//6 : Affiche score
 	public void afficheScores(){
 		scoreB.setText(d_.getScoreB()+"");		
@@ -573,15 +590,4 @@ public class Graphisme extends Application {
 		}
 	}
 
-	
-	public void colorerRectangleTourJeu(){
-		if(d_.getTour())
-			rectTourJeu.setFill(Color.RED);
-		else
-			rectTourJeu.setFill(Color.BLUE);
-	}
-
-	public void setTypeJeu(String typeJ){
-		d_.setTypeJeu(typeJ);
-	}
 }

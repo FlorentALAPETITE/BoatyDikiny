@@ -37,6 +37,50 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 	public void handle(MouseEvent event){
 		joueDeuxHumains(event);	
 	}
+
+
+	public static Case getSelected1(){
+		return selected1;
+	}
+
+	public static Case getSelected2(){
+		return selected2;
+	}
+
+	public static void resetSelected(){
+		selected1 = null;
+		selected2 = null;
+	}
+
+
+	// METHODES OBLIGATOIRES :
+
+	// 7 relieComposantes
+	public boolean relieComposantes(){
+		boolean res = false;
+		int i =0;
+		ClasseUnion c1,c2;
+
+		Color couleur = c_.getCouleur();
+
+		if(couleur==Color.WHITE){
+			if (moteurD_.getTour())
+				couleur = Color.RED;
+			else
+				couleur = Color.BLUE;
+		}
+
+		while(i<voisins_.size() && !res){
+			if(couleur == voisins_.get(i).getCouleur()){
+				res=true;
+			}
+			++i;
+		}
+			
+	
+		return res;
+	}
+
 		
 	// 8. joueDeuxHumains()
 	public void joueDeuxHumains(MouseEvent event){
@@ -290,51 +334,13 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					break;
 
 		
-		}
-
-	}
-
-			
-	}
-
-	// 7 relieComposantes
-	public boolean relieComposantes(){
-		boolean res = false;
-		int i =0;
-		ClasseUnion c1,c2;
-
-		Color couleur = c_.getCouleur();
-
-		if(couleur==Color.WHITE){
-			if (moteurD_.getTour())
-				couleur = Color.RED;
-			else
-				couleur = Color.BLUE;
-		}
-
-		while(i<voisins_.size() && !res){
-			if(couleur == voisins_.get(i).getCouleur()){
-				res=true;
 			}
-			++i;
+
 		}
+
 			
-	
-		return res;
 	}
 
-
-	public static Case getSelected1(){
-		return selected1;
-	}
-
-	public static Case getSelected2(){
-		return selected2;
-	}
-
-	public static void resetSelected(){
-		selected1 = null;
-		selected2 = null;
-	}
+		
 
 }
