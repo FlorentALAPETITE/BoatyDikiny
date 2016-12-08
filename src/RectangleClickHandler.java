@@ -35,6 +35,11 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 	
 	public void handle(MouseEvent event){
+		joueDeuxHumains(event);	
+	}
+		
+	// 8. joueDeuxHumains()
+	public void joueDeuxHumains(MouseEvent event){
 
 		if(moteurD_.getVictoire()==""){
 
@@ -288,7 +293,6 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 		}
 
 	}
-		
 
 			
 	}
