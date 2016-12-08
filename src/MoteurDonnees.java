@@ -3,8 +3,11 @@ import java.util.Random;
 import java.util.HashSet;
 import java.util.ArrayList;
 import java.lang.Math;
+import java.awt.Robot;
 
 class MoteurDonnees {
+
+	private Graphisme graphisme_;
 
 	private Case [] [] matriceCase_;
 	private int lignes_;
@@ -15,6 +18,9 @@ class MoteurDonnees {
 	private int scoreR_;
 	private int scoreB_;
 
+	private int centreMasseX;
+	private int centreMasseY;
+
 	private String victoire;
 
 	private String typeJeu;
@@ -22,7 +28,9 @@ class MoteurDonnees {
 	private HashSet<ClasseUnion> unionFindSetRed_;
 	private HashSet<ClasseUnion> unionFindSetBlue_;
 
-	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif){
+	public MoteurDonnees(int lignes, int colonnes, int nbCasesObjectif, Graphisme g){
+
+		graphisme_ = g;
 
 		victoire ="";
 
@@ -128,7 +136,7 @@ class MoteurDonnees {
 			}			
 		}
 
-		tour_=true; // bleu
+		tour_=true; // rouge
 
 		testVictoire();
 
@@ -175,9 +183,34 @@ class MoteurDonnees {
 			return 0;
 	}
 
+	// 9.1 evaluerCase1()
+	public void evaluerCase1(){
+		centreMasseX = 0;
+		centreMasseY = 0;
+
+		int nbCase = 0;
+
+		for(ClasseUnion cu : unionFindSetBlue_){
+			centreMasseX+=cu.getCase().getLigne();
+			centreMasseY+=cu.getCase().getColonne();
+			++nbCase;
+			for(ClasseUnion cu2 : cu.parcoursClasseUnion()){
+				centreMasseX+=cu.getCase().getLigne();
+				centreMasseY+=cu.getCase().getColonne();
+				++nbCase;
+			}
+		}
+
+		centreMasseX = centreMasseX/nbCase;
+		centreMasseY = centreMasseY/nbCase;
+
+	}
 
 	public void setTypeJeu(String typeJ){
 		typeJeu = typeJ;
+		if(typeJeu == "ia"){
+			evaluerCase1();
+		}
 	}
 
 	public int getScoreR(){
@@ -213,14 +246,74 @@ class MoteurDonnees {
 		testVictoire();
 
 
-		if(typeJeu == "ia"){
+		if(typeJeu == "ia" && !tour_){
+			joueOrdiHumain();
+		}
 
-			// FAIRE IA ICI
+	}
 
+
+	public void joueOrdiHumain(){
+
+		Case c_=null;
+		ArrayList<Case> objectif;
+		Case caseCentreMasse = getCase(centreMasseX,centreMasseY);
+
+		boolean trouve = false;
+
+		for(ClasseUnion cu : unionFindSetBlue_){			
+			if(cu.getNbObjectif()>0){
+				objectif = relierCasesMin(cu.getCase(),caseCentreMasse);
+				if(objectif.size()>0){
+					trouve = true;
+					c_ = objectif.get(0);
+					break;
+				}
+			}
 
 		}
 
+		System.out.println(c_);
 
+
+		if(trouve && c_.getCouleur()==Color.WHITE){
+
+			ArrayList<Case> voisins_ = getVoisins(c_);
+
+			Color col; 
+			if (getTour())
+				col = Color.RED;
+			else
+				col = Color.BLUE;
+			graphisme_.getRectangle(c_.getLigne(),c_.getColonne()).setFill(col);
+						
+			colorerCase(c_.getColonne(),c_.getLigne(),col);
+			
+			ClasseUnion c1,c2;
+
+			boolean seul = true;
+
+			
+			for(Case c : voisins_){
+				if(c_.getCouleur() == c.getCouleur()){
+					seul = false;
+					c1 = c_.getClasseUnion().classe();
+					c2 = c.getClasseUnion().classe();
+					if(c1!=c2){
+						c1.union(c2);
+						unifierClasseUnion(c_.getClasseUnion(),c.getClasseUnion());
+					}
+
+				}
+				if(seul){
+					ajouterClasseUnion(c_.getClasseUnion());
+				}
+			}
+			
+			changeTour();
+			graphisme_.afficheScores();
+			graphisme_.colorerRectangleTourJeu();			
+		}
 	}
 
 	public String getVictoire(){
@@ -271,7 +364,7 @@ class MoteurDonnees {
 
 	public void unifierClasseUnion(ClasseUnion c1, ClasseUnion c2){
 		if(c1.getNbNoeud()>c2.getNbNoeud())	{
-			if(c1.getRep().getCouleur()==Color.RED){
+			if(c1.getCase().getCouleur()==Color.RED){
 				unionFindSetRed_.remove(c2);
 				ajouterClasseUnion(c1.classe());
 			}
@@ -281,7 +374,7 @@ class MoteurDonnees {
 			}
 		}
 		else{
-			if(c1.getRep().getCouleur()==Color.RED){
+			if(c1.getCase().getCouleur()==Color.RED){
 				unionFindSetRed_.remove(c1);
 				ajouterClasseUnion(c2.classe());
 			}
@@ -293,7 +386,7 @@ class MoteurDonnees {
 	}
 
 	public void ajouterClasseUnion(ClasseUnion c){
-		if(c.getRep().getCouleur() == Color.RED){
+		if(c.getCase().getCouleur() == Color.RED){
 			if(!unionFindSetRed_.contains(c))
 				unionFindSetRed_.add(c);
 		}

@@ -43,7 +43,7 @@ class ClasseUnion {
 		}
 	}
 
-	public Case getRep(){
+	public Case getCase(){
 		return case_;
 	}
 

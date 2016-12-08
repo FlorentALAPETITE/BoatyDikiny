@@ -138,7 +138,7 @@ public class Graphisme extends Application {
 
 	public void loadGame(Stage primaryStage){
 
-		d_ = new MoteurDonnees(nbLignes,nbColonnes,nbObj);
+		d_ = new MoteurDonnees(nbLignes,nbColonnes,nbObj,this);
 
 		h_ = 800;
 		w_ = 800;	

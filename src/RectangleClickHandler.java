@@ -82,8 +82,8 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 
 				if(composantes!=null){
 					for(ClasseUnion cu : composantes){						
-						graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(6);
-						graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.YELLOW);
+						graphisme_.getRectangle(cu.getCase().getLigne(),cu.getCase().getColonne()).setStrokeWidth(6);
+						graphisme_.getRectangle(cu.getCase().getLigne(),cu.getCase().getColonne()).setStroke(Color.YELLOW);
 					}
 				}
 
@@ -93,8 +93,8 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 						try{
 							sleep(3600);
 							for(ClasseUnion cu : composantes){								
-								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStrokeWidth(0);
-								graphisme_.getRectangle(cu.getRep().getLigne(),cu.getRep().getColonne()).setStroke(Color.WHITE);
+								graphisme_.getRectangle(cu.getCase().getLigne(),cu.getCase().getColonne()).setStrokeWidth(0);
+								graphisme_.getRectangle(cu.getCase().getLigne(),cu.getCase().getColonne()).setStroke(Color.WHITE);
 							}
 						} catch(Exception e){
 							e.printStackTrace();
@@ -284,8 +284,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 					graphisme_.setSelectedButton("");	
 					break;
 
-
-			
+		
 		}
 
 	}
@@ -316,23 +315,7 @@ class RectangleClickHandler implements EventHandler<MouseEvent>{
 			++i;
 		}
 			
-		
-		// A verifier (marche pas pour test des cases blanches)
-
-
-		// 	while(i<voisins_.size() && !res){
-		// 		if(c_.getCouleur() == voisins_.get(i).getCouleur()){
-		// 			c1 = c_.getClasseUnion().classe();
-		// 			c2 = voisins_.get(i).getClasseUnion().classe();
-		// 			if(c1!=c2)
-		// 				res=true;
-		// 		}
-		// 		++i;
-		// 	}
-		// 	return res;
-		// }
-
-
+	
 		return res;
 	}
 
