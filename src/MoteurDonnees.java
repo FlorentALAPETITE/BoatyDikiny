@@ -402,12 +402,12 @@ class MoteurDonnees {
 		int nbCase = 0;
 
 		for(ClasseUnion cu : unionFindSetBlue_){
-			centreMasseX+=cu.getCase().getLigne();
-			centreMasseY+=cu.getCase().getColonne();
+			centreMasseX+=cu.getCase().getColonne();
+			centreMasseY+=cu.getCase().getLigne();
 			++nbCase;
 			for(ClasseUnion cu2 : cu.parcoursClasseUnion()){
-				centreMasseX+=cu.getCase().getLigne();
-				centreMasseY+=cu.getCase().getColonne();
+				centreMasseX+=cu.getCase().getColonne();
+				centreMasseY+=cu.getCase().getLigne();
 				++nbCase;
 			}
 		}
